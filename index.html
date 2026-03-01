@@ -4,72 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>0xdefalt.hood - Web3 & Automação</title>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Courier New', monospace;
-      background: #0a0a0a;
-      color: #00ff9d;
-      overflow-x: hidden;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 40px 20px;
-      text-align: center;
-    }
-    h1 {
-      font-size: 4.5em;
-      text-shadow: 0 0 20px #00ff9d, 0 0 40px #00ff9d;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 1.4em;
-      max-width: 600px;
-      margin: 0 auto 40px;
-    }
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .btn {
-      background: rgba(0, 255, 157, 0.1);
-      border: 2px solid #00ff9d;
-      color: #00ff9d;
-      padding: 18px 40px;
-      font-size: 1.4em;
-      text-decoration: none;
-      border-radius: 12px;
-      transition: all 0.3s;
-      box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
-    }
-    .btn:hover {
-      background: #00ff9d;
-      color: #0a0a0a;
-      box-shadow: 0 0 40px #00ff9d;
-      transform: translateY(-5px);
-    }
-    .disclaimer {
-      margin-top: 60px;
-      font-size: 0.9em;
-      opacity: 0.7;
-    }
+    body { margin: 0; font-family: 'Courier New', monospace; background: #0a0a0a; color: #00ff9d; overflow-x: hidden; }
+    #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+    .container { max-width: 900px; margin: 0 auto; padding: 80px 20px; text-align: center; position: relative; z-index: 1; }
+    h1 { font-size: 5.5em; text-shadow: 0 0 30px #00ff9d, 0 0 60px #00ff9d; margin-bottom: 20px; animation: glow 4s infinite alternate; }
+    @keyframes glow { from { text-shadow: 0 0 30px #00ff9d; } to { text-shadow: 0 0 60px #00ff9d, 0 0 100px #00ff9d; } }
+    p { font-size: 1.6em; max-width: 700px; margin: 0 auto 60px; }
+    .links { display: flex; flex-direction: column; gap: 30px; }
+    .btn { background: rgba(0, 255, 157, 0.08); border: 2px solid #00ff9d; color: #00ff9d; padding: 22px 60px; font-size: 1.6em; text-decoration: none; border-radius: 15px; transition: all 0.4s; box-shadow: 0 0 25px rgba(0, 255, 157, 0.4); }
+    .btn:hover { background: #00ff9d; color: #0a0a0a; box-shadow: 0 0 50px #00ff9d; transform: translateY(-8px) scale(1.05); }
+    .disclaimer { margin-top: 100px; font-size: 1em; opacity: 0.6; }
   </style>
 </head>
 <body>
+  <div id="particles-js"></div>
   <div class="container">
     <h1>0xdefalt.hood</h1>
     <p>Alpha real de Polymarket, automação no X e oportunidades crypto sem scam 🔥🇧🇷</p>
 
     <div class="links">
-      <a href="https://polymarket.com/?via=seuuser" class="btn">Polymarket (meu referral)</a>
-      <a href="https://t.me/seucanal" class="btn">Telegram Alpha Exclusivo</a>
-      <a href="https://dub.co/?via=seuuser" class="btn">Dub.co Links</a>
-      <a href="https://binance.com/?ref=seuuser" class="btn">Binance Referral</a>
+      <a href="https://polymarket.com/?via=SEU_REFERRAL" class="btn">Polymarket (meu referral)</a>
+      <a href="https://t.me/SEU_CANAL" class="btn">Telegram Alpha Exclusivo</a>
+      <a href="https://dub.co/?via=SEU_REFERRAL" class="btn">Dub.co Links</a>
+      <a href="https://binance.com/?ref=SEU_REFERRAL" class="btn">Binance Referral</a>
     </div>
 
     <p class="disclaimer">Links afiliados ajudam a manter o conteúdo gratuito. Obrigado pelo apoio!</p>
   </div>
+
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 100 },
+        "color": { "value": "#00ff9d" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.6 },
+        "size": { "value": 4 },
+        "line_linked": { "enable": true, "color": "#00ff9d", "distance": 150 },
+        "move": { "enable": true, "speed": 3 }
+      }
+    });
+  </script>
 </body>
 </html>
