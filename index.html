@@ -341,7 +341,7 @@
     });
 
     // POLYMARKET ROTATIVO
-    fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/events?closed=false&limit=12&order=volume&ascending=false')
+    fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://gamma-api.polymarket.com/events?closed=false&limit=12&order=volume&ascending=false'))
       .then(r => r.json())
       .then(data => {
         const markets = data.filter(m => {
