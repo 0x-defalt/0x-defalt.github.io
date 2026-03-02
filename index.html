@@ -345,26 +345,47 @@
     let polyMarkets = [];
     let polyIdx = 0;
 
-    fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/events?closed=false&active=true&limit=50&order=volume&ascending=false')
-      .then(r => r.json())
-      .then(data => {
-        polyMarkets = data.filter(m => {
-          if (!m.title || !m.slug) return false;
-          if (!m.markets || !m.markets[0]) return false;
-          const mk = m.markets[0];
-          if (!mk.outcomePrices) return false;
-          const prices = typeof mk.outcomePrices === 'string' ? JSON.parse(mk.outcomePrices) : mk.outcomePrices;
-          if (!prices || prices.length < 2) return false;
-          const yes = Math.round(parseFloat(prices[0]) * 100);
-          if (yes > 88 || yes < 12) return false;
-          return true;
-        });
-        if (polyMarkets.length) renderPoly();
-        else polyGrid.innerHTML = '<div class="card"><p style="color:var(--dim-text);">Nenhum mercado disponível.</p></div>';
-      })
-      .catch(() => {
+    const POLY_API = 'https://gamma-api.polymarket.com/events?closed=false&active=true&limit=50&order=volume&ascending=false';
+    const URLS = [
+      POLY_API,
+      'https://corsproxy.io/?' + POLY_API,
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(POLY_API),
+      'https://thingproxy.freeboard.io/fetch/' + POLY_API,
+    ];
+
+    async function fetchPoly() {
+      for (const url of URLS) {
+        try {
+          const r = await Promise.race([
+            fetch(url),
+            new Promise((_, rej) => setTimeout(() => rej(), 5000))
+          ]);
+          const data = await r.json();
+          if (Array.isArray(data) && data.length) return data;
+        } catch(e) { continue; }
+      }
+      return null;
+    }
+
+    fetchPoly().then(data => {
+      if (!data) {
         polyGrid.innerHTML = '<div class="card"><p style="color:var(--dim-text);">Mercados indisponíveis no momento.</p></div>';
+        return;
+      }
+      polyMarkets = data.filter(m => {
+        if (!m.title || !m.slug) return false;
+        if (!m.markets || !m.markets[0]) return false;
+        const mk = m.markets[0];
+        if (!mk.outcomePrices) return false;
+        const prices = typeof mk.outcomePrices === 'string' ? JSON.parse(mk.outcomePrices) : mk.outcomePrices;
+        if (!prices || prices.length < 2) return false;
+        const yes = Math.round(parseFloat(prices[0]) * 100);
+        if (yes > 88 || yes < 12) return false;
+        return true;
       });
+      if (polyMarkets.length) renderPoly();
+      else polyGrid.innerHTML = '<div class="card"><p style="color:var(--dim-text);">Nenhum mercado disponível.</p></div>';
+    });
 
     function renderPoly() {
       const slice = [0,1,2].map(i => polyMarkets[(polyIdx + i) % polyMarkets.length]);
