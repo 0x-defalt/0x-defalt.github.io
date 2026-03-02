@@ -305,7 +305,7 @@
       }
     });
 
-    // ====================== POLYMARKET — LINK CORRETO (/event/) + ROTACIONA DE VERDADE ======================
+    // ====================== POLYMARKET — /event/ CORRETO + ROTACIONA DE VERDADE ======================
     let allMarkets = [];
     let politicsIdx = 0;
     let cryptoIdx = 0;
@@ -328,7 +328,7 @@
           if (!prices || prices.length < 2) return false;
 
           const yesPrice = parseFloat(prices[0]);
-          if (yesPrice <= 0.05 || yesPrice >= 0.95) return false; // bloqueia só os quase mortos
+          if (yesPrice <= 0.10 || yesPrice >= 0.90) return false; // ← mais mercados pra rotacionar
 
           return true;
         });
@@ -369,7 +369,7 @@
 
           const el = document.createElement('a');
           el.className = 'card';
-          el.href = 'https://polymarket.com/event/' + m.slug;   // ← LINK CERTO (com /event/)
+          el.href = 'https://polymarket.com/event/' + m.slug;   // ← LINK CERTO COM /event/
           el.target = '_blank';
           el.rel = 'noopener';
           el.innerHTML = `
