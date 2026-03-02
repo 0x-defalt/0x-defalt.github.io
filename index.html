@@ -8,20 +8,20 @@
   <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- Open Graph / Link Preview -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://0x-defalt.github.io/" />
-  <meta property="og:title"       content="0xDefalt — Alpha, Automação & Web3" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://0x-defalt.github.io/" />
+  <meta property="og:title" content="0xDefalt — Alpha, Automação & Web3" />
   <meta property="og:description" content="Content Creator · Builder · Dev. Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket. Transformando Dados em Lucro Real." />
-  <meta property="og:image"       content="https://0x-defalt.github.io/profile.jpg" />
-  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image" content="https://0x-defalt.github.io/profile.jpg" />
+  <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
   <!-- Twitter Card -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:site"        content="@0xDefalt" />
-  <meta name="twitter:title"       content="0xDefalt — Alpha, Automação & Web3" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@0xDefalt" />
+  <meta name="twitter:title" content="0xDefalt — Alpha, Automação & Web3" />
   <meta name="twitter:description" content="Content Creator · Builder · Dev. Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket." />
-  <meta name="twitter:image"       content="https://0x-defalt.github.io/profile.jpg" />
+  <meta name="twitter:image" content="https://0x-defalt.github.io/profile.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   
@@ -180,41 +180,6 @@
     }
     .footer-twitter svg { width: 15px; height: 15px; fill: var(--neon); }
 
-    /* POLYMARKET SLIDER */
-    #poly-slider-wrapper { position: relative; overflow: hidden; }
-    #poly-loading { color: var(--dim-text); font-size: 0.9rem; font-family: var(--font-header); padding: 20px 0; }
-    #poly-slider { display: flex; transition: transform 0.5s ease; }
-    .poly-slide {
-      min-width: 100%; display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
-    }
-    .poly-card {
-      background: var(--card-bg); border: 1px solid #222;
-      padding: 24px; border-radius: 12px; transition: 0.3s;
-      text-decoration: none; color: inherit; display: block;
-    }
-    .poly-card:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,255,157,0.1); }
-    .poly-card-title { font-family: var(--font-header); font-weight: 700; font-size: 1rem; margin-bottom: 14px; line-height: 1.4; }
-    .poly-outcomes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-    .poly-outcome {
-      display: flex; align-items: center; gap: 6px;
-      background: #1a1a1a; border: 1px solid #333;
-      border-radius: 6px; padding: 6px 12px; font-size: 0.82rem;
-      font-family: var(--font-header); font-weight: 500;
-    }
-    .poly-outcome.yes { border-color: rgba(0,255,157,0.4); color: var(--neon); }
-    .poly-outcome.no  { border-color: rgba(255,80,80,0.4); color: #ff5050; }
-    .poly-bar-wrap { background: #1a1a1a; border-radius: 4px; height: 4px; overflow: hidden; margin-bottom: 10px; }
-    .poly-bar { height: 100%; background: var(--neon); border-radius: 4px; transition: width 0.8s ease; }
-    .poly-meta { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--dim-text); font-family: var(--font-header); }
-    .poly-vol { color: var(--neon); font-weight: 700; }
-    #poly-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
-    .poly-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #333; cursor: pointer; transition: 0.3s;
-    }
-    .poly-dot.active { background: var(--neon); box-shadow: 0 0 8px var(--neon); }
-
     @media (max-width: 850px) {
       .hero { flex-direction: column-reverse; text-align: center; padding-top: 100px; }
       .hero-content h1 { font-size: 2.2rem; }
@@ -273,7 +238,7 @@
     <section id="polymarket-live" class="animate-entry" style="animation-delay: 0.7s; margin-bottom: 100px;">
         <span class="section-title">Polymarket — Mercados em Alta</span>
         <div id="poly-grid" class="grid">
-          <div class="card" style="color: var(--dim-text); font-size:0.9rem;">Carregando...</div>
+          <div class="card" style="color: var(--dim-text); font-size:0.9rem;">Carregando mercados ao vivo...</div>
         </div>
     </section>
 
@@ -340,11 +305,19 @@
       }
     });
 
-    // POLYMARKET ROTATIVO
-    fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&limit=50&order=volume&ascending=false')
-      .then(r => r.json())
-      .then(data => {
-        const markets = data.filter(m => {
+    // ====================== POLYMARKET APRIMORADO ======================
+    let allMarkets = [];
+    let idx = 0;
+
+    async function loadMarkets() {
+      const grid = document.getElementById('poly-grid');
+      grid.innerHTML = '<div class="card" style="color: var(--dim-text); font-size:0.9rem;">Carregando mercados ao vivo...</div>';
+
+      try {
+        const res = await fetch('https://polymarket-proxy2.dinrildotcom.workers.dev/');
+        const data = await res.json();
+
+        allMarkets = data.filter(m => {
           if (!m.question || !m.outcomePrices || !m.slug) return false;
           if (m.question.toLowerCase().includes('did not forecast')) return false;
           if (m.active === false || m.closed === true) return false;
@@ -355,55 +328,59 @@
           return true;
         });
 
-        const grid = document.getElementById('poly-grid');
-
-        if (!markets.length) {
+        if (!allMarkets.length) {
           grid.innerHTML = '<div class="card"><p style="color:var(--dim-text);">Nenhum mercado disponível.</p></div>';
           return;
         }
 
-        let idx = 0;
-
-        function renderCards() {
-          const count = Math.min(3, markets.length);
-          const three = Array.from({length: count}, (_, i) => markets[(idx + i) % markets.length]);
-          grid.style.opacity = '0';
-          setTimeout(() => {
-            grid.innerHTML = '';
-            three.forEach(m => {
-              const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : (m.outcomePrices || [0.5, 0.5]);
-              const yes = Math.round(parseFloat(prices[0]) * 100);
-              const vol = parseFloat(m.volume || 0);
-              const fvol = vol >= 1e6 ? '$' + (vol/1e6).toFixed(1) + 'M' : vol >= 1e3 ? '$' + (vol/1e3).toFixed(0) + 'K' : '$' + vol.toFixed(0);
-              const el = document.createElement('a');
-              el.className = 'card';
-              el.href = 'https://polymarket.com/event/' + m.slug;
-              el.target = '_blank';
-              el.rel = 'noopener';
-              el.innerHTML = `
-                <h3 style="font-size:0.95rem;line-height:1.4;margin-bottom:12px;">${m.question}</h3>
-                <div style="display:flex;gap:8px;margin-bottom:10px;">
-                  <span style="color:var(--neon);font-size:0.85rem;font-weight:700;">Sim ${yes}%</span>
-                  <span style="color:#ff5050;font-size:0.85rem;font-weight:700;">Não ${100-yes}%</span>
-                </div>
-                <div style="background:#1a1a1a;border-radius:4px;height:4px;overflow:hidden;margin-bottom:10px;">
-                  <div style="width:${yes}%;height:100%;background:var(--neon);border-radius:4px;"></div>
-                </div>
-                <div style="font-size:0.78rem;color:var(--dim-text);">Volume: <span style="color:var(--neon);font-weight:700;">${fvol}</span></div>`;
-              grid.appendChild(el);
-            });
-            grid.style.transition = 'opacity 0.5s';
-            grid.style.opacity = '1';
-            idx = (idx + 3) % markets.length;
-          }, 400);
-        }
-
         renderCards();
-        setInterval(renderCards, 5000);
-      })
-      .catch(() => {
-        document.getElementById('poly-grid').innerHTML = '<div class="card"><p style="color:var(--dim-text);">Mercados indisponíveis no momento.</p></div>';
-      });
+      } catch (e) {
+        grid.innerHTML = '<div class="card"><p style="color:var(--dim-text);">Mercados indisponíveis no momento.</p></div>';
+        console.error(e);
+      }
+    }
+
+    function renderCards() {
+      const grid = document.getElementById('poly-grid');
+      const count = Math.min(3, allMarkets.length);
+      const three = Array.from({length: count}, (_, i) => allMarkets[(idx + i) % allMarkets.length]);
+
+      grid.style.opacity = '0';
+      setTimeout(() => {
+        grid.innerHTML = '';
+        three.forEach(m => {
+          const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : (m.outcomePrices || [0.5, 0.5]);
+          const yes = Math.round(parseFloat(prices[0]) * 100);
+          const vol = parseFloat(m.volume || 0);
+          const fvol = vol >= 1e6 ? '$' + (vol/1e6).toFixed(1) + 'M' : vol >= 1e3 ? '$' + (vol/1e3).toFixed(0) + 'K' : '$' + vol.toFixed(0);
+
+          const el = document.createElement('a');
+          el.className = 'card';
+          el.href = 'https://polymarket.com/event/' + m.slug;
+          el.target = '_blank';
+          el.rel = 'noopener';
+          el.innerHTML = `
+            <h3 style="font-size:0.95rem;line-height:1.4;margin-bottom:12px;">${m.question}</h3>
+            <div style="display:flex;gap:8px;margin-bottom:10px;">
+              <span style="color:var(--neon);font-size:0.85rem;font-weight:700;">Sim ${yes}%</span>
+              <span style="color:#ff5050;font-size:0.85rem;font-weight:700;">Não ${100-yes}%</span>
+            </div>
+            <div style="background:#1a1a1a;border-radius:4px;height:4px;overflow:hidden;margin-bottom:10px;">
+              <div style="width:${yes}%;height:100%;background:var(--neon);border-radius:4px;"></div>
+            </div>
+            <div style="font-size:0.78rem;color:var(--dim-text);">Volume: <span style="color:var(--neon);font-weight:700;">${fvol}</span></div>`;
+          grid.appendChild(el);
+        });
+        grid.style.transition = 'opacity 0.5s';
+        grid.style.opacity = '1';
+        idx = (idx + 3) % allMarkets.length;
+      }, 400);
+    }
+
+    // Carrega ao abrir e atualiza preços automaticamente
+    loadMarkets();
+    setInterval(loadMarkets, 40000);     // atualiza os preços reais a cada 40 segundos
+    setInterval(() => { if (allMarkets.length) renderCards(); }, 5000); // rotação dos cards
 
     // Parallax na foto
     window.addEventListener('scroll', function() {
