@@ -3,49 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>0xdefalt.hood - Web3 & Automação</title>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <title>0xDefalt | Alpha & Automation</title>
   <style>
-    body { margin: 0; font-family: 'Courier New', monospace; background: #0a0a0a; color: #00ff9d; overflow-x: hidden; }
-    #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-    .container { max-width: 900px; margin: 0 auto; padding: 80px 20px; text-align: center; position: relative; z-index: 1; }
-    h1 { font-size: 5.5em; text-shadow: 0 0 30px #00ff9d, 0 0 60px #00ff9d; margin-bottom: 20px; animation: glow 4s infinite alternate; }
-    @keyframes glow { from { text-shadow: 0 0 30px #00ff9d; } to { text-shadow: 0 0 60px #00ff9d, 0 0 100px #00ff9d; } }
-    p { font-size: 1.6em; max-width: 700px; margin: 0 auto 60px; }
-    .links { display: flex; flex-direction: column; gap: 30px; }
-    .btn { background: rgba(0, 255, 157, 0.08); border: 2px solid #00ff9d; color: #00ff9d; padding: 22px 60px; font-size: 1.6em; text-decoration: none; border-radius: 15px; transition: all 0.4s; box-shadow: 0 0 25px rgba(0, 255, 157, 0.4); }
-    .btn:hover { background: #00ff9d; color: #0a0a0a; box-shadow: 0 0 50px #00ff9d; transform: translateY(-8px) scale(1.05); }
-    .disclaimer { margin-top: 100px; font-size: 1em; opacity: 0.6; }
+    :root { 
+      --neon: #00ff9d; 
+      --bg: #000000; 
+      --gray: #1a1a1a;
+      --text: #ffffff;
+    }
+
+    * { box-sizing: border-box; cursor: crosshair; }
+
+    body { 
+      margin: 0; 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+      background: var(--bg); 
+      color: var(--text); 
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* Efeito de ruído de fundo (estética X/Crypto) */
+    body::after {
+      content: "";
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url("https://upload.wikimedia.org/wikipedia/commons/5/5a/Can_Static_Noise.gif");
+      opacity: 0.03; z-index: 10; pointer-events: none;
+    }
+
+    .container { max-width: 700px; margin: 0 auto; padding: 100px 24px; }
+
+    /* Header Minimalista como pedido */
+    header { margin-bottom: 80px; }
+    h1 { 
+      font-size: 4rem; 
+      font-weight: 900; 
+      letter-spacing: -3px; 
+      margin: 0;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .bio { 
+      font-size: 1.2rem; 
+      color: #888; 
+      margin-top: 10px; 
+      border-left: 2px solid var(--neon);
+      padding-left: 20px;
+      max-width: 500px;
+    }
+
+    /* Grid de Links Inspirada em Feeds de Alpha */
+    .link-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 50px; }
+
+    .card {
+      background: var(--gray);
+      border: 1px solid #333;
+      padding: 24px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      border-color: var(--neon);
+      background: #0a0a0a;
+      transform: scale(1.02);
+    }
+
+    .card-info h2 { margin: 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+    .card-info p { margin: 5px 0 0; font-size: 0.85rem; color: #888; }
+
+    .arrow { color: var(--neon); font-weight: bold; font-size: 1.2rem; }
+
+    /* Badge de "Live" ou "Active" */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      background: rgba(0, 255, 157, 0.1);
+      color: var(--neon);
+      padding: 4px 12px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .dot { width: 6px; height: 6px; background: var(--neon); border-radius: 50%; animation: pulse 1.5s infinite; }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    footer { margin-top: 100px; font-size: 0.8rem; color: #444; text-align: left; }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 3rem; }
+    }
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
-  <div class="container">
-    <h1>0xdefalt.hood</h1>
-    <p>Alpha real de Polymarket, automação no X e oportunidades crypto sem scam 🔥🇧🇷</p>
 
-    <div class="links">
-      <a href="https://polymarket.com/?via=SEU_REFERRAL" class="btn">Polymarket (meu referral)</a>
-      <a href="https://t.me/SEU_CANAL" class="btn">Telegram Alpha Exclusivo</a>
-      <a href="https://dub.co/?via=SEU_REFERRAL" class="btn">Dub.co Links</a>
-      <a href="https://binance.com/?ref=SEU_REFERRAL" class="btn">Binance Referral</a>
+  <div class="container">
+    <div class="status-badge">
+      <div class="dot"></div> System Online: Monitoring Polymarket
     </div>
 
-    <p class="disclaimer">Links afiliados ajudam a manter o conteúdo gratuito. Obrigado pelo apoio!</p>
+    <header>
+      <h1>0xDefalt</h1>
+      <div class="bio">
+        Alpha real de Polymarket, automação no X e oportunidades crypto sem ruído. Onde a execução encontra o dado.
+      </div>
+    </header>
+
+    <div class="link-stack">
+      <a href="https://polymarket.com/?via=SEU_REFERRAL" class="card">
+        <div class="card-info">
+          <h2>Polymarket Alpha</h2>
+          <p>Onde o smart money aposta. Use meu referral.</p>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a href="https://t.me/SEU_CANAL" class="card">
+        <div class="card-info">
+          <h2>Telegram Exclusivo</h2>
+          <p>Alertas de automação e sinais em tempo real.</p>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+
+      <a href="https://binance.com/?ref=SEU_REFERRAL" class="card">
+        <div class="card-info">
+          <h2>Binance Setup</h2>
+          <p>Liquidez para suas operações de arbitragem.</p>
+        </div>
+        <div class="arrow">→</div>
+      </a>
+    </div>
+
+    <footer>
+      $ NO SCAMS. NO NOISE. JUST DATA. <br>
+      © 2026 0xDefalt - Built for the 1%
+    </footer>
   </div>
 
-  <script>
-    particlesJS("particles-js", {
-      "particles": {
-        "number": { "value": 100 },
-        "color": { "value": "#00ff9d" },
-        "shape": { "type": "circle" },
-        "opacity": { "value": 0.6 },
-        "size": { "value": 4 },
-        "line_linked": { "enable": true, "color": "#00ff9d", "distance": 150 },
-        "move": { "enable": true, "speed": 3 }
-      }
-    });
-  </script>
 </body>
 </html>
