@@ -272,10 +272,8 @@
 
     <section id="polymarket-live" class="animate-entry" style="animation-delay: 0.7s; margin-bottom: 100px;">
         <span class="section-title">Polymarket — Mercados em Alta</span>
-        <div id="poly-slider-wrapper">
-          <div id="poly-loading">Carregando mercados...</div>
-          <div id="poly-slider"></div>
-          <div id="poly-dots"></div>
+        <div id="poly-grid" class="grid">
+          <div class="card" style="color: var(--dim-text); font-size:0.9rem;">Carregando...</div>
         </div>
     </section>
 
@@ -342,88 +340,39 @@
       }
     });
 
-    // POLYMARKET LIVE MARKETS
-    (async function() {
-      const loading = document.getElementById('poly-loading');
-      const slider  = document.getElementById('poly-slider');
-      const dotsEl  = document.getElementById('poly-dots');
-      let current   = 0;
-      let slides    = [];
-
-      function formatVol(n) {
-        if (n >= 1e6) return '$' + (n/1e6).toFixed(1) + 'M';
-        if (n >= 1e3) return '$' + (n/1e3).toFixed(0) + 'K';
-        return '$' + n.toFixed(0);
-      }
-
-      function buildSlides(markets) {
-        const perSlide = 3;
-        for (let i = 0; i < markets.length; i += perSlide) {
-          const chunk = markets.slice(i, i + perSlide);
-          const slide = document.createElement('div');
-          slide.className = 'poly-slide';
-          chunk.forEach(m => {
-            const outcomes = (m.outcomes || ['Yes','No']);
-            const prices   = (m.outcomePrices || ['0.5','0.5']).map(Number);
-            const yesPct   = Math.round((prices[0] || 0.5) * 100);
-            const vol      = parseFloat(m.volume || 0);
-            const slug     = m.slug || '';
-            const card = document.createElement('a');
-            card.className = 'poly-card';
-            card.href = `https://polymarket.com/event/${slug}`;
-            card.target = '_blank';
-            card.rel = 'noopener';
-            card.innerHTML = `
-              <div class="poly-card-title">${m.question || m.title || 'Mercado'}</div>
-              <div class="poly-outcomes">
-                <div class="poly-outcome yes">${outcomes[0] || 'Yes'} <strong>${yesPct}%</strong></div>
-                <div class="poly-outcome no">${outcomes[1] || 'No'} <strong>${100-yesPct}%</strong></div>
-              </div>
-              <div class="poly-bar-wrap"><div class="poly-bar" style="width:${yesPct}%"></div></div>
-              <div class="poly-meta">
-                <span>Volume: <span class="poly-vol">${formatVol(vol)}</span></span>
-                <span>→ Ver mercado</span>
-              </div>`;
-            slide.appendChild(card);
-          });
-          slider.appendChild(slide);
-          slides.push(slide);
-        }
-
-        // dots
-        slides.forEach((_, i) => {
-          const dot = document.createElement('div');
-          dot.className = 'poly-dot' + (i === 0 ? ' active' : '');
-          dot.addEventListener('click', () => goTo(i));
-          dotsEl.appendChild(dot);
+    // POLYMARKET SIMPLES
+    fetch('https://gamma-api.polymarket.com/markets?closed=false&limit=4&order=volume&ascending=false')
+      .then(r => r.json())
+      .then(data => {
+        const grid = document.getElementById('poly-grid');
+        grid.innerHTML = '';
+        data.slice(0, 4).forEach(m => {
+          const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : (m.outcomePrices || [0.5, 0.5]);
+          const yes = Math.round(parseFloat(prices[0]) * 100);
+          const vol = parseFloat(m.volume || 0);
+          const fvol = vol >= 1e6 ? '$' + (vol/1e6).toFixed(1) + 'M' : vol >= 1e3 ? '$' + (vol/1e3).toFixed(0) + 'K' : '$' + vol.toFixed(0);
+          const slug = m.slug || '';
+          const el = document.createElement('a');
+          el.className = 'card';
+          el.href = 'https://polymarket.com/event/' + slug;
+          el.target = '_blank';
+          el.rel = 'noopener';
+          el.innerHTML = `
+            <h3 style="font-size:0.95rem;line-height:1.4;margin-bottom:12px;">${m.question || 'Mercado'}</h3>
+            <div style="display:flex;gap:8px;margin-bottom:10px;">
+              <span style="color:var(--neon);font-size:0.85rem;font-weight:700;">Sim ${yes}%</span>
+              <span style="color:#ff5050;font-size:0.85rem;font-weight:700;">Não ${100-yes}%</span>
+            </div>
+            <div style="background:#1a1a1a;border-radius:4px;height:4px;overflow:hidden;margin-bottom:10px;">
+              <div style="width:${yes}%;height:100%;background:var(--neon);border-radius:4px;"></div>
+            </div>
+            <div style="font-size:0.78rem;color:var(--dim-text);">Volume: <span style="color:var(--neon);font-weight:700;">${fvol}</span></div>`;
+          grid.appendChild(el);
         });
-
-        // auto-play
-        setInterval(() => goTo((current + 1) % slides.length), 5000);
-      }
-
-      function goTo(n) {
-        current = n;
-        slider.style.transform = `translateX(-${n * 100}%)`;
-        document.querySelectorAll('.poly-dot').forEach((d, i) => d.classList.toggle('active', i === n));
-      }
-
-      try {
-        const res  = await fetch('https://gamma-api.polymarket.com/markets?closed=false&limit=12&order=volume&ascending=false');
-        const data = await res.json();
-        // parse outcomes/prices se vierem como string
-        const markets = data.map(m => ({
-          ...m,
-          outcomes: typeof m.outcomes === 'string' ? JSON.parse(m.outcomes) : (m.outcomes || ['Yes','No']),
-          outcomePrices: typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : (m.outcomePrices || ['0.5','0.5'])
-        }));
-        loading.style.display = 'none';
-        buildSlides(markets);
-      } catch(e) {
-        loading.textContent = 'Não foi possível carregar os mercados agora.';
-        console.error(e);
-      }
-    })();
+      })
+      .catch(() => {
+        document.getElementById('poly-grid').innerHTML = '<div class="card"><p>Mercados indisponíveis no momento.</p></div>';
+      });
 
     // Parallax na foto
     window.addEventListener('scroll', function() {
