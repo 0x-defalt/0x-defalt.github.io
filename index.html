@@ -345,20 +345,44 @@
     let polyMarkets = [];
     let polyIdx = 0;
 
+    // Fallback estático — sempre aparece enquanto carrega ao vivo
+    const fallbackMarkets = [
+      { title: 'Ver mercados em destaque', slug: 'markets', volume: 0 },
+      { title: 'Explorar previsões de Política', slug: 'markets?category=politics', volume: 0 },
+      { title: 'Explorar previsões de Crypto', slug: 'markets?category=crypto', volume: 0 },
+    ];
+
+    function showFallback() {
+      polyGrid.innerHTML = '';
+      fallbackMarkets.forEach(m => {
+        const el = document.createElement('a');
+        el.className = 'card';
+        el.href = 'https://polymarket.com/' + m.slug;
+        el.target = '_blank';
+        el.rel = 'noopener';
+        el.innerHTML = `<h3 style="font-size:0.95rem;line-height:1.4;margin-bottom:8px;">${m.title}</h3>
+          <p style="color:var(--dim-text);font-size:0.85rem;margin:0;">Abrir no Polymarket →</p>`;
+        polyGrid.appendChild(el);
+      });
+    }
+
+    showFallback(); // mostra fallback imediatamente
+
     const POLY_API = 'https://gamma-api.polymarket.com/events?closed=false&active=true&limit=50&order=volume&ascending=false';
-    const URLS = [
+    const PROXIES = [
       POLY_API,
       'https://corsproxy.io/?' + POLY_API,
       'https://api.allorigins.win/raw?url=' + encodeURIComponent(POLY_API),
       'https://thingproxy.freeboard.io/fetch/' + POLY_API,
+      'https://proxy.cors.sh/' + POLY_API,
     ];
 
     async function fetchPoly() {
-      for (const url of URLS) {
+      for (const url of PROXIES) {
         try {
           const r = await Promise.race([
-            fetch(url),
-            new Promise((_, rej) => setTimeout(() => rej(), 5000))
+            fetch(url, { headers: { 'x-requested-with': 'XMLHttpRequest' } }),
+            new Promise((_, rej) => setTimeout(() => rej(), 6000))
           ]);
           const data = await r.json();
           if (Array.isArray(data) && data.length) return data;
@@ -368,13 +392,9 @@
     }
 
     fetchPoly().then(data => {
-      if (!data) {
-        polyGrid.innerHTML = '<div class="card"><p style="color:var(--dim-text);">Mercados indisponíveis no momento.</p></div>';
-        return;
-      }
-      polyMarkets = data.filter(m => {
-        if (!m.title || !m.slug) return false;
-        if (!m.markets || !m.markets[0]) return false;
+      if (!data) return; // mantém fallback
+      const filtered = data.filter(m => {
+        if (!m.title || !m.slug || !m.markets || !m.markets[0]) return false;
         const mk = m.markets[0];
         if (!mk.outcomePrices) return false;
         const prices = typeof mk.outcomePrices === 'string' ? JSON.parse(mk.outcomePrices) : mk.outcomePrices;
@@ -383,8 +403,9 @@
         if (yes > 88 || yes < 12) return false;
         return true;
       });
-      if (polyMarkets.length) renderPoly();
-      else polyGrid.innerHTML = '<div class="card"><p style="color:var(--dim-text);">Nenhum mercado disponível.</p></div>';
+      if (!filtered.length) return;
+      polyMarkets = filtered;
+      renderPoly();
     });
 
     function renderPoly() {
