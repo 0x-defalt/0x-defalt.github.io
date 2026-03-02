@@ -350,6 +350,8 @@
           if (m.question.toLowerCase().includes('n/a')) return false;
           const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
           if (!prices || prices.length < 2) return false;
+          const yes = Math.round(parseFloat(prices[0]) * 100);
+          if (yes > 85 || yes < 15) return false;
           return true;
         });
 
