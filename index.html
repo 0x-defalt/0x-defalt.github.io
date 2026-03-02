@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="0xDefalt — Alpha limpo. Sem ruído. Só o que funciona. Web3, Automação, Sistemas." />
+  <meta name="description" content="0xDefalt — Alpha limpo. Sem ruído. Só o que funciona. Content Creator, Builder & Dev." />
   <title>0xDefalt | Web3 • Automação • Sistemas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- tsParticles para background motion tech -->
+  <!-- tsParticles para circuitos tech com movimento -->
   <script src="https://cdn.jsdelivr.net/npm/@tsparticles/engine@3/tsparticles.engine.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tsparticles/preset-links@3/tsparticles.preset.links.min.js"></script>
 
@@ -28,8 +28,8 @@
       font-family: 'Space Mono', 'IBM Plex Mono', 'Courier New', monospace;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.7;
-      font-size: 1.05rem;
+      line-height: 1.65;
+      font-size: 1rem; /* fonte base menor */
       overflow-x: hidden;
       position: relative;
     }
@@ -44,20 +44,20 @@
       top: 0;
       width: 100%;
       z-index: 100;
-      background: rgba(10, 14, 20, 0.9);
+      background: rgba(10, 14, 20, 0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
     nav {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 1.4rem 2rem;
+      padding: 1.2rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .logo {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: var(--neon);
       letter-spacing: -1px;
@@ -65,8 +65,8 @@
     .nav-links a {
       color: var(--dim-text);
       text-decoration: none;
-      margin-left: 2.5rem;
-      font-size: 1rem;
+      margin-left: 2rem;
+      font-size: 0.95rem;
       transition: color 0.3s;
     }
     .nav-links a:hover { color: var(--neon); }
@@ -81,34 +81,34 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 160px 0 100px;
-      gap: 5rem;
+      padding: 140px 0 80px;
+      gap: 4rem;
     }
     .hero-content { flex: 1; }
     .section-title {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       text-transform: uppercase;
       color: var(--neon);
-      letter-spacing: 4px;
-      margin-bottom: 1.5rem;
+      letter-spacing: 3.5px;
+      margin-bottom: 1.2rem;
       font-weight: 700;
     }
     .hero h1 {
-      font-size: 4.2rem;
+      font-size: 3.8rem; /* diminuído */
       line-height: 1.1;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
       font-weight: 700;
-      letter-spacing: -1.5px;
+      letter-spacing: -1.2px;
     }
     .hero p {
-      font-size: 1.3rem;
+      font-size: 1.15rem; /* menor */
       color: var(--dim-text);
-      max-width: 680px;
-      margin-bottom: 2.5rem;
+      max-width: 640px;
+      margin-bottom: 2rem;
     }
     .profile-wrapper {
-      width: 320px;
-      height: 320px;
+      width: 280px;
+      height: 280px;
       flex-shrink: 0;
       position: relative;
     }
@@ -122,78 +122,76 @@
     }
     .profile-wrapper:hover .profile-img {
       border-color: var(--neon);
-      box-shadow: 0 0 40px rgba(0, 255, 157, 0.4);
+      box-shadow: 0 0 35px rgba(0, 255, 157, 0.35);
       transform: scale(1.05);
     }
     .btn {
       display: inline-block;
       background: var(--neon);
       color: #000;
-      padding: 1.2rem 3rem;
+      padding: 1rem 2.5rem;
       border-radius: 8px;
       text-decoration: none;
       font-weight: 700;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       transition: all 0.3s;
     }
     .btn:hover {
       transform: translateY(-4px);
-      box-shadow: 0 0 40px rgba(0, 255, 157, 0.6);
+      box-shadow: 0 0 35px rgba(0, 255, 157, 0.5);
     }
-    .ecossistema {
-      padding: 6rem 0;
+    .ecossistema, .links-section {
+      padding: 5rem 0;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 2rem;
-      margin-top: 4rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.6rem;
+      margin-top: 3rem;
     }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      padding: 2rem;
+      padding: 1.6rem; /* cards menores */
       border-radius: 12px;
-      min-height: 220px;
+      min-height: 180px; /* mais compacto */
       transition: all 0.4s;
     }
     .card:hover {
       border-color: var(--neon);
-      transform: translateY(-8px);
-      box-shadow: 0 15px 40px rgba(0, 255, 157, 0.2);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0, 255, 157, 0.15);
     }
     .card h3 {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
+      font-size: 1.3rem; /* menor */
+      margin-bottom: 0.8rem;
       color: var(--neon);
     }
     .card p {
       color: var(--dim-text);
-      font-size: 1rem;
-    }
-    .links-section {
-      padding: 4rem 0 8rem;
+      font-size: 0.95rem;
     }
     footer {
-      padding: 4rem 0;
+      padding: 4rem 0 3rem;
       text-align: center;
       color: var(--dim-text);
       border-top: 1px solid var(--border);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
     footer a { color: var(--neon); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
     @media (max-width: 1024px) {
-      .hero { flex-direction: column-reverse; text-align: center; padding-top: 140px; gap: 4rem; }
-      .hero h1 { font-size: 3.2rem; }
-      .profile-wrapper { width: 260px; height: 260px; margin: 0 auto; }
+      .hero { flex-direction: column-reverse; text-align: center; padding-top: 120px; gap: 3rem; }
+      .hero h1 { font-size: 3rem; }
+      .profile-wrapper { width: 240px; height: 240px; margin: 0 auto; }
     }
     @media (max-width: 640px) {
       .hero h1 { font-size: 2.6rem; letter-spacing: -1px; }
-      .hero p { font-size: 1.15rem; }
+      .hero p { font-size: 1.05rem; }
       nav { flex-direction: column; gap: 1rem; padding: 1rem; }
-      .nav-links a { margin: 0 1rem; }
+      .nav-links a { margin: 0 1rem; font-size: 0.9rem; }
+      .grid { gap: 1.4rem; }
     }
   </style>
 </head>
@@ -216,7 +214,7 @@
       <div class="hero-content">
         <div class="section-title">WEB3 • AUTOMAÇÃO • SISTEMAS</div>
         <h1>Alpha limpo.<br>Sem ruído.<br>Só o que funciona.</h1>
-        <p>Dev & trader. Automação no X, OSINT, análise de sentimento, produtividade extrema, infra on-chain e Web3. 🇳🇵⚡ Dados viram edge → liberdade.</p>
+        <p>Content Creator, Builder & Dev. Automação no X, OSINT, análise de sentimento, produtividade extrema, infra on-chain e Web3. 🇳🇵⚡ Dados viram edge → liberdade.</p>
         <a href="https://t.me/SEU_CANAL_AQUI" class="btn">Entrar no Canal Alpha</a>
       </div>
       <div class="profile-wrapper">
@@ -241,7 +239,7 @@
         </div>
         <div class="card">
           <h3>Dev Custom & Consultoria</h3>
-          <p>Automação sob medida, bots/tools privados, setup de infra para traders e projetos sérios. Sem fluff.</p>
+          <p>Automação sob medida, bots/tools privados, setup de infra para projetos e criadores sérios. Sem fluff.</p>
         </div>
       </div>
     </section>
@@ -249,8 +247,7 @@
     <section class="links-section" id="links">
       <div class="section-title">LINKS DIRETOS</div>
       <div class="grid">
-        <!-- Removido Binance. Adicione outros links aqui se quiser -->
-        <!-- Exemplo: <div class="card">... seu novo link ...</div> -->
+        <!-- Sem Binance. Adicione links aqui se quiser (ex: GitHub, Dune, etc.) -->
       </div>
     </section>
   </main>
@@ -265,21 +262,21 @@
       preset: "links",
       background: { color: { value: "#0a0e14" } },
       particles: {
-        number: { value: 50, density: { enable: true, value_area: 800 } },
+        number: { value: 45, density: { enable: true, value_area: 800 } },
         color: { value: ["#00ff9d", "#58a6ff", "#a0aacc"] },
         shape: { type: "circle" },
-        opacity: { value: 0.5, random: true },
-        size: { value: 2.5, random: true },
+        opacity: { value: 0.45, random: true },
+        size: { value: 2, random: true },
         line_linked: {
           enable: true,
-          distance: 160,
+          distance: 140,
           color: "#00ff9d",
-          opacity: 0.3,
-          width: 1
+          opacity: 0.28,
+          width: 0.8
         },
         move: {
           enable: true,
-          speed: 1,
+          speed: 0.8,  // movimento lento e sutil
           direction: "none",
           random: true,
           straight: false,
@@ -291,7 +288,7 @@
           onhover: { enable: true, mode: "grab" },
           onclick: { enable: false }
         },
-        modes: { grab: { distance: 200, line_linked: { opacity: 0.6 } } }
+        modes: { grab: { distance: 180, line_linked: { opacity: 0.55 } } }
       },
       retina_detect: true
     });
