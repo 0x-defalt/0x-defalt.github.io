@@ -305,7 +305,7 @@
       }
     });
 
-    // ====================== POLYMARKET — ROTACIONANDO DE VERDADE (Politics → Crypto → Sports) ======================
+    // ====================== POLYMARKET — ROTACIONANDO + 99% e 1% BLOQUEADOS ======================
     let allMarkets = [];
     let politicsIdx = 0;
     let cryptoIdx = 0;
@@ -323,15 +323,20 @@
           if (!m.question || !m.outcomePrices || !m.slug) return false;
           if (m.question.toLowerCase().includes('did not forecast')) return false;
           if (m.active === false || m.closed === true || m.archived === true) return false;
-          
+
           const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
           if (!prices || prices.length < 2) return false;
+
+          // FILTRO FORTE ANTI-RESOLVIDOS (bloqueia 99%, 1%, 100%, 0%, 95%+, etc)
+          const yes = Math.round(parseFloat(prices[0]) * 100);
+          if (yes <= 5 || yes >= 95) return false;
+
           return true;
         });
 
         if (allMarkets.length > 0) renderCategorizedCards();
       } catch (e) {
-        console.log("API temporariamente fora...");
+        console.log("API fora, tentando novamente...");
       }
     }
 
@@ -384,19 +389,16 @@
         polyGrid.style.transition = 'opacity 0.5s';
         polyGrid.style.opacity = '1';
 
-        // Avança os índices pra rotacionar
         politicsIdx++;
         cryptoIdx++;
         sportsIdx++;
       }, 350);
     }
 
-    // Inicia + atualiza preços + rotaciona
     loadPolymarketMarkets();
     setInterval(loadPolymarketMarkets, 30000);
     setInterval(() => { if (allMarkets.length) renderCategorizedCards(); }, 5000);
 
-    // Parallax
     window.addEventListener('scroll', function() {
         const scrolled = window.pageYOffset;
         const profile = document.querySelector('.profile-wrapper');
