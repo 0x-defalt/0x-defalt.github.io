@@ -3,66 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="0xDefalt — Web3, Automação, Produtividade, Sistemas. Alpha limpo, sem ruído. Dev & trader focado em automações no X, OSINT e infra on-chain." />
-  <meta property="og:title" content="0xDefalt | Web3 • Automação • Sistemas" />
-  <meta property="og:description" content="Alpha limpo. Sem ruído. Só o que funciona. 🇳🇵⚡" />
-  <meta property="og:image" content="https://pbs.twimg.com/profile_images/2022051737364770816/DIWeYXV8.jpg" />
+  <meta name="description" content="0xDefalt — Alpha limpo. Sem ruído. Só o que funciona. Web3, Automação, Sistemas." />
   <title>0xDefalt | Web3 • Automação • Sistemas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  
-  <!-- tsParticles CDN (leve e oficial) -->
+
+  <!-- tsParticles para background motion tech -->
   <script src="https://cdn.jsdelivr.net/npm/@tsparticles/engine@3/tsparticles.engine.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tsparticles/interaction-external-trail@3/tsparticles.interaction.external.trail.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tsparticles/preset-links@3/tsparticles.preset.links.min.js"></script>
 
   <style>
     :root {
       --neon: #00ff9d;
-      --bg: #0d1117;
-      --card-bg: #161b22;
-      --text: #c9d1d9;
-      --dim-text: #8b949e;
-      --border: #30363d;
-      --accent: #58a6ff;
+      --bg: #0a0e14;
+      --card-bg: #11151e;
+      --text: #e0e7ff;
+      --dim-text: #a0aacc;
+      --border: #1e293b;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Space Mono', 'IBM Plex Mono', 'Source Code Pro', monospace;
+      font-family: 'Space Mono', 'IBM Plex Mono', 'Courier New', monospace;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.65;
+      line-height: 1.7;
       font-size: 1.05rem;
-      position: relative;
       overflow-x: hidden;
+      position: relative;
     }
-    /* Fundo de partículas */
     #tsparticles {
       position: fixed;
       inset: 0;
-      z-index: -1;
-      pointer-events: none; /* não interfere em cliques */
+      z-index: -2;
+      pointer-events: none;
     }
     header {
       position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 999;
-      background: rgba(13, 17, 23, 0.92);
-      backdrop-filter: blur(10px);
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(10, 14, 20, 0.9);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
     nav {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 1.2rem 1.5rem;
+      padding: 1.4rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .logo {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: var(--neon);
       letter-spacing: -1px;
@@ -71,14 +66,14 @@
       color: var(--dim-text);
       text-decoration: none;
       margin-left: 2.5rem;
-      font-size: 0.95rem;
-      transition: color 0.25s;
+      font-size: 1rem;
+      transition: color 0.3s;
     }
     .nav-links a:hover { color: var(--neon); }
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 1.5rem;
+      padding: 0 2rem;
       position: relative;
       z-index: 1;
     }
@@ -86,126 +81,123 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 180px 0 120px;
-      gap: 6rem;
+      padding: 160px 0 100px;
+      gap: 5rem;
     }
     .hero-content { flex: 1; }
     .section-title {
-      font-size: 0.85rem;
-      font-weight: 700;
+      font-size: 0.9rem;
       text-transform: uppercase;
       color: var(--neon);
-      letter-spacing: 3.5px;
-      margin-bottom: 1.2rem;
+      letter-spacing: 4px;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
     }
     .hero h1 {
-      font-size: 4.5rem;
-      line-height: 1.05;
-      margin-bottom: 1.4rem;
+      font-size: 4.2rem;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
       font-weight: 700;
-      letter-spacing: -1.8px;
+      letter-spacing: -1.5px;
     }
     .hero p {
-      font-size: 1.35rem;
+      font-size: 1.3rem;
       color: var(--dim-text);
-      max-width: 620px;
+      max-width: 680px;
       margin-bottom: 2.5rem;
     }
     .profile-wrapper {
-      position: relative;
-      width: 340px;
-      height: 340px;
+      width: 320px;
+      height: 320px;
       flex-shrink: 0;
+      position: relative;
     }
     .profile-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      transition: all 0.4s ease;
+      border-radius: 16px;
+      border: 2px solid var(--border);
+      transition: all 0.4s;
     }
     .profile-wrapper:hover .profile-img {
       border-color: var(--neon);
-      box-shadow: 0 0 50px rgba(0, 255, 157, 0.3);
-      transform: scale(1.04);
+      box-shadow: 0 0 40px rgba(0, 255, 157, 0.4);
+      transform: scale(1.05);
+    }
+    .btn {
+      display: inline-block;
+      background: var(--neon);
+      color: #000;
+      padding: 1.2rem 3rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.15rem;
+      transition: all 0.3s;
+    }
+    .btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 40px rgba(0, 255, 157, 0.6);
+    }
+    .ecossistema {
+      padding: 6rem 0;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 2rem;
-      margin: 8rem 0 6rem;
+      margin-top: 4rem;
     }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      padding: 2.2rem;
+      padding: 2rem;
       border-radius: 12px;
-      transition: all 0.4s ease;
-      position: relative;
-      z-index: 2;
+      min-height: 220px;
+      transition: all 0.4s;
     }
     .card:hover {
       border-color: var(--neon);
-      transform: translateY(-10px);
-      box-shadow: 0 20px 50px rgba(0, 255, 157, 0.18);
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(0, 255, 157, 0.2);
     }
     .card h3 {
-      font-size: 1.55rem;
+      font-size: 1.4rem;
       margin-bottom: 1rem;
-      font-weight: 700;
+      color: var(--neon);
     }
     .card p {
       color: var(--dim-text);
       font-size: 1rem;
     }
-    .btn {
-      display: inline-block;
-      background: var(--neon);
-      color: #0d1117;
-      padding: 1.1rem 3rem;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 1.1rem;
-      transition: all 0.3s;
-      position: relative;
-      z-index: 2;
-    }
-    .btn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 0 45px rgba(0, 255, 157, 0.55);
+    .links-section {
+      padding: 4rem 0 8rem;
     }
     footer {
-      padding: 6rem 0 4rem;
+      padding: 4rem 0;
       text-align: center;
       color: var(--dim-text);
       border-top: 1px solid var(--border);
-      font-size: 0.95rem;
-      position: relative;
-      z-index: 2;
+      font-size: 0.9rem;
     }
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    footer a:hover { color: var(--neon); }
+    footer a { color: var(--neon); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
     @media (max-width: 1024px) {
-      .hero { flex-direction: column-reverse; text-align: center; padding-top: 140px; gap: 4rem; min-height: auto; }
-      .hero h1 { font-size: 3.4rem; }
-      .profile-wrapper { width: 280px; height: 280px; margin: 0 auto; }
-      nav { padding: 1rem; }
-      .nav-links a { margin-left: 1.8rem; font-size: 0.9rem; }
+      .hero { flex-direction: column-reverse; text-align: center; padding-top: 140px; gap: 4rem; }
+      .hero h1 { font-size: 3.2rem; }
+      .profile-wrapper { width: 260px; height: 260px; margin: 0 auto; }
     }
     @media (max-width: 640px) {
-      .hero h1 { font-size: 2.8rem; }
-      .hero p { font-size: 1.2rem; }
-      .grid { gap: 1.5rem; }
+      .hero h1 { font-size: 2.6rem; letter-spacing: -1px; }
+      .hero p { font-size: 1.15rem; }
+      nav { flex-direction: column; gap: 1rem; padding: 1rem; }
+      .nav-links a { margin: 0 1rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Fundo motion tech -->
   <div id="tsparticles"></div>
 
   <header>
@@ -222,22 +214,18 @@
   <main class="container">
     <section class="hero" id="sobre">
       <div class="hero-content">
-        <div class="section-title">Web3 • Automação • Sistemas</div>
+        <div class="section-title">WEB3 • AUTOMAÇÃO • SISTEMAS</div>
         <h1>Alpha limpo.<br>Sem ruído.<br>Só o que funciona.</h1>
         <p>Dev & trader. Automação no X, OSINT, análise de sentimento, produtividade extrema, infra on-chain e Web3. 🇳🇵⚡ Dados viram edge → liberdade.</p>
-        <a href="https://t.me/+SEU_LINK_AQUI" class="btn">Entrar no Canal Alpha</a>
+        <a href="https://t.me/SEU_CANAL_AQUI" class="btn">Entrar no Canal Alpha</a>
       </div>
       <div class="profile-wrapper">
-        <img 
-          src="https://pbs.twimg.com/profile_images/2022051737364770816/DIWeYXV8.jpg" 
-          alt="𝕯𝖊𝖋𝖆𝖑𝖙 🕵🏻‍♂️⚡ 🇳🇵" 
-          class="profile-img"
-        >
+        <img src="https://pbs.twimg.com/profile_images/2022051737364770816/DIWeYXV8.jpg" alt="0xDefalt" class="profile-img">
       </div>
     </section>
 
-    <section id="ecossistema">
-      <div class="section-title">O Ecossistema</div>
+    <section class="ecossistema" id="ecossistema">
+      <div class="section-title">O ECOSSISTEMA</div>
       <div class="grid">
         <div class="card">
           <h3>Automação X / OSINT</h3>
@@ -258,83 +246,52 @@
       </div>
     </section>
 
-    <section id="links">
-      <div class="section-title">Links Diretos</div>
+    <section class="links-section" id="links">
+      <div class="section-title">LINKS DIRETOS</div>
       <div class="grid">
-        <a href="https://www.binance.com/" target="_blank" rel="noopener" class="card" style="border-style: dashed;">
-          <h3>Binance →</h3>
-          <p>Liquidez e velocidade para execuções rápidas e alta frequência.</p>
-        </a>
+        <!-- Removido Binance. Adicione outros links aqui se quiser -->
+        <!-- Exemplo: <div class="card">... seu novo link ...</div> -->
       </div>
     </section>
   </main>
 
   <footer>
-    <p>© <script>document.write(new Date().getFullYear());</script> 0xDefalt — Web3 • Automação • Sistemas<br>
-    Built different. <a href="https://x.com/0xdefalt" target="_blank">@0xdefalt</a> 🕵🏻‍♂️⚡ 🇳🇵</p>
+    © <script>document.write(new Date().getFullYear());</script> 0xDefalt — Web3 • Automação • Sistemas<br>
+    Built different. <a href="https://x.com/0xdefalt" target="_blank">@0xdefalt</a> 🕵🏻‍♂️⚡ 🇳🇵
   </footer>
 
-  <!-- Configuração tsParticles: fundo tech sutil -->
   <script>
     tsParticles.load("tsparticles", {
       preset: "links",
-      background: {
-        color: {
-          value: "#0d1117"  // combina com --bg
-        }
-      },
+      background: { color: { value: "#0a0e14" } },
       particles: {
-        number: {
-          value: 60,          // não muitos para ficar sutil
-          density: { enable: true, value_area: 800 }
-        },
-        color: {
-          value: ["#00ff9d", "#58a6ff", "#8b949e"]  // neon verde + azul + cinza
-        },
-        shape: {
-          type: "circle"
-        },
-        opacity: {
-          value: 0.4,
-          random: true
-        },
-        size: {
-          value: 2.5,
-          random: true
-        },
+        number: { value: 50, density: { enable: true, value_area: 800 } },
+        color: { value: ["#00ff9d", "#58a6ff", "#a0aacc"] },
+        shape: { type: "circle" },
+        opacity: { value: 0.5, random: true },
+        size: { value: 2.5, random: true },
         line_linked: {
           enable: true,
-          distance: 150,
+          distance: 160,
           color: "#00ff9d",
-          opacity: 0.25,
+          opacity: 0.3,
           width: 1
         },
         move: {
           enable: true,
-          speed: 1.2,         // lento para não distrair
+          speed: 1,
           direction: "none",
           random: true,
           straight: false,
-          out_mode: "out",
-          attract: { enable: false }
+          out_mode: "out"
         }
       },
       interactivity: {
-        detect_on: "canvas",
         events: {
-          onhover: {
-            enable: true,
-            mode: "grab"      // linhas se formam ao passar mouse (tech vibe)
-          },
-          onclick: { enable: false },
-          resize: true
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: false }
         },
-        modes: {
-          grab: {
-            distance: 180,
-            line_linked: { opacity: 0.5 }
-          }
-        }
+        modes: { grab: { distance: 200, line_linked: { opacity: 0.6 } } }
       },
       retina_detect: true
     });
