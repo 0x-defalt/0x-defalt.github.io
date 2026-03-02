@@ -305,7 +305,7 @@
       }
     });
 
-    // ====================== POLYMARKET — ROTACIONANDO DE VERDADE (sem repetir) ======================
+    // ====================== POLYMARKET — ROTACIONA DE VERDADE + 99% BLOQUEADOS ======================
     let allMarkets = [];
     let politicsIdx = 0;
     let cryptoIdx = 0;
@@ -327,16 +327,16 @@
           const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
           if (!prices || prices.length < 2) return false;
 
-          // BLOQUEIA SÓ OS REALMENTE RESOLVIDOS (0% e 99%+)
-          const yes = Math.round(parseFloat(prices[0]) * 100);
-          if (yes <= 1 || yes >= 99) return false;
+          // FILTRO AJUSTADO: bloqueia SÓ os quase resolvidos (0-2% e 98-100%)
+          const yesPrice = parseFloat(prices[0]);
+          if (yesPrice <= 0.02 || yesPrice >= 0.98) return false;
 
           return true;
         });
 
         if (allMarkets.length > 0) renderCategorizedCards();
       } catch (e) {
-        console.log("API fora, tentando novamente...");
+        console.log("API temporariamente fora...");
       }
     }
 
@@ -389,19 +389,16 @@
         polyGrid.style.transition = 'opacity 0.5s';
         polyGrid.style.opacity = '1';
 
-        // AVANÇA OS ÍNDICES → ROTACIONA DE VERDADE
         politicsIdx++;
         cryptoIdx++;
         sportsIdx++;
       }, 350);
     }
 
-    // Inicia + atualiza preços + rotação
     loadPolymarketMarkets();
-    setInterval(loadPolymarketMarkets, 30000);
+    setInterval(loadPolymarketMarkets, 30000);   // atualiza preços reais
     setInterval(() => { if (allMarkets.length) renderCategorizedCards(); }, 5000);
 
-    // Parallax
     window.addEventListener('scroll', function() {
         const scrolled = window.pageYOffset;
         const profile = document.querySelector('.profile-wrapper');
