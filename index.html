@@ -347,6 +347,7 @@
         const markets = data.filter(m => {
           if (!m.question || !m.outcomePrices || !m.slug) return false;
           if (m.question.toLowerCase().includes('did not forecast')) return false;
+          if (m.active === false || m.closed === true) return false;
           const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
           if (!prices || prices.length < 2) return false;
           const yes = Math.round(parseFloat(prices[0]) * 100);
