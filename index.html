@@ -343,12 +343,30 @@
     // POLYMARKET ROTATIVO
     // POLYMARKET ROTATIVO
     const POLY_URL = 'https://gamma-api.polymarket.com/events?closed=false&limit=12&order=volume&ascending=false';
+    const PROXIES = [
+      POLY_URL,
+      'https://corsproxy.io/?' + POLY_URL,
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(POLY_URL),
+      'https://proxy.cors.sh/' + POLY_URL,
+      'https://cors-anywhere.herokuapp.com/' + POLY_URL,
+    ];
 
     function fetchWithTimeout(url, ms) {
       return Promise.race([
-        fetch(url),
+        fetch(url, { headers: { 'x-requested-with': 'XMLHttpRequest' } }),
         new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))
       ]);
+    }
+
+    async function tryProxies() {
+      for (const url of PROXIES) {
+        try {
+          const r = await fetchWithTimeout(url, 6000);
+          const data = await r.json();
+          if (Array.isArray(data) && data.length) return data;
+        } catch(e) { continue; }
+      }
+      return null;
     }
 
     function initPoly(data) {
@@ -401,16 +419,10 @@
       setInterval(renderCards, 5000);
     }
 
-    // tenta direto, se falhar usa proxy
-    fetchWithTimeout(POLY_URL, 5000)
-      .then(r => r.json())
-      .then(initPoly)
-      .catch(() => fetchWithTimeout('https://api.allorigins.win/raw?url=' + encodeURIComponent(POLY_URL), 8000))
-      .then(r => r && r.json ? r.json() : null)
-      .then(data => { if (data) initPoly(data); })
-      .catch(() => {
-        document.getElementById('poly-grid').innerHTML = '<div class="card"><p style="color:var(--dim-text);">Mercados indisponíveis no momento.</p></div>';
-      });
+    tryProxies().then(data => {
+      if (data) initPoly(data);
+      else document.getElementById('poly-grid').innerHTML = '<div class="card"><p style="color:var(--dim-text);">Mercados indisponíveis no momento.</p></div>';
+    });
 
     // Parallax na foto
     window.addEventListener('scroll', function() {
