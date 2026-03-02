@@ -341,17 +341,23 @@
     });
 
     // POLYMARKET ROTATIVO
-    fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&limit=30&order=volume&ascending=false')
+    fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&limit=50&order=volume&ascending=false')
       .then(r => r.json())
       .then(data => {
         const markets = data.filter(m => {
-          if (!m.question || !m.outcomePrices || !m.conditionId) return false;
+          if (!m.question || !m.outcomePrices || !m.slug) return false;
           if (m.question.toLowerCase().includes('did not forecast')) return false;
           if (m.question.toLowerCase().includes('n/a')) return false;
+          // filtra mercados automatizados de esportes/crypto
+          const slug = m.slug || '';
+          if (/\d{4}-\d{2}-\d{2}/.test(slug)) return false; // slugs com data
+          if (/up-down|total-\d|updown|\d+pt\d/.test(slug)) return false;
+          if (/^[a-z]{2,5}\d+-/.test(slug)) return false; // códigos esportivos tipo egy1-eis
           const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
           if (!prices || prices.length < 2) return false;
           const yes = Math.round(parseFloat(prices[0]) * 100);
           if (yes > 85 || yes < 15) return false;
+          if (parseFloat(m.volume || 0) < 10000) return false; // mínimo $10k de volume
           return true;
         });
 
