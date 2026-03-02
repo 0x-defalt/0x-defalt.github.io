@@ -283,7 +283,7 @@
     </div>
   </footer>
 
-  <script>
+ <script>
     particlesJS("particles-js", {
       "particles": {
         "number": { "value": 70 },
@@ -305,13 +305,14 @@
       }
     });
 
-    // ====================== POLYMARKET — 1º POLITICS • 2º CRYPTO • 3º SPORTS (sem mexer em mais nada) ======================
+    // ====================== POLYMARKET — 1º POLITICS • 2º CRYPTO • 3º SPORTS (SEM RESOLVIDOS) ======================
     let allMarkets = [];
     const polyGrid = document.getElementById('poly-grid');
 
     async function loadPolymarketMarkets() {
       try {
-        const response = await fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&limit=60&order=volume&ascending=false');
+        // URL atualizada com active=true (bloqueia resolvidos na fonte)
+        const response = await fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&active=true&limit=60&order=volume&ascending=false');
         if (!response.ok) throw new Error();
 
         const data = await response.json();
@@ -319,7 +320,8 @@
         allMarkets = data.filter(m => {
           if (!m.question || !m.outcomePrices || !m.slug) return false;
           if (m.question.toLowerCase().includes('did not forecast')) return false;
-          if (m.active === false || m.closed === true) return false;
+          if (m.active === false || m.closed === true || m.archived === true) return false;  // ← filtro extra anti-resolvido
+          
           const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
           if (!prices || prices.length < 2) return false;
           return true;
@@ -329,7 +331,7 @@
 
         renderCategorizedCards();
       } catch (e) {
-        console.log("Polymarket temporariamente fora, tentando de novo em 30s...");
+        console.log("Polymarket fora, tentando novamente em 30s...");
       }
     }
 
@@ -386,10 +388,10 @@
 
     // Inicia e atualiza automaticamente
     loadPolymarketMarkets();
-    setInterval(loadPolymarketMarkets, 30000);   // atualiza preços em tempo real
+    setInterval(loadPolymarketMarkets, 30000);
     setInterval(() => { if (allMarkets.length) renderCategorizedCards(); }, 5000);
 
-    // Parallax na foto (igualzinho ao original)
+    // Parallax na foto
     window.addEventListener('scroll', function() {
         const scrolled = window.pageYOffset;
         const profile = document.querySelector('.profile-wrapper');
