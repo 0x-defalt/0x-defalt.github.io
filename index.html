@@ -341,23 +341,30 @@
     });
 
     // POLYMARKET ROTATIVO
-    // POLYMARKET ROTATIVO
     fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&limit=20&order=volume&ascending=false')
       .then(r => r.json())
       .then(data => {
         const markets = data.filter(m => {
-          if (!m.question || !m.outcomePrices || !m.groupSlug) return false;
+          if (!m.question || !m.outcomePrices || !m.conditionId) return false;
           if (m.question.toLowerCase().includes('did not forecast')) return false;
           if (m.question.toLowerCase().includes('n/a')) return false;
           const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
           if (!prices || prices.length < 2) return false;
           return true;
         });
+
         const grid = document.getElementById('poly-grid');
+
+        if (!markets.length) {
+          grid.innerHTML = '<div class="card"><p style="color:var(--dim-text);">Nenhum mercado disponível.</p></div>';
+          return;
+        }
+
         let idx = 0;
 
         function renderCards() {
-          const three = [markets[idx % markets.length], markets[(idx+1) % markets.length], markets[(idx+2) % markets.length]];
+          const count = Math.min(3, markets.length);
+          const three = Array.from({length: count}, (_, i) => markets[(idx + i) % markets.length]);
           grid.style.opacity = '0';
           setTimeout(() => {
             grid.innerHTML = '';
@@ -368,7 +375,7 @@
               const fvol = vol >= 1e6 ? '$' + (vol/1e6).toFixed(1) + 'M' : vol >= 1e3 ? '$' + (vol/1e3).toFixed(0) + 'K' : '$' + vol.toFixed(0);
               const el = document.createElement('a');
               el.className = 'card';
-              el.href = 'https://polymarket.com/event/' + m.groupSlug;
+              el.href = 'https://polymarket.com/market/' + m.conditionId;
               el.target = '_blank';
               el.rel = 'noopener';
               el.innerHTML = `
