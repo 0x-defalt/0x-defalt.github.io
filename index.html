@@ -10,7 +10,7 @@
   <!-- Open Graph / Link Preview -->
   <meta property="og:type"        content="website" />
   <meta property="og:url"         content="https://0x-defalt.github.io/" />
-  <meta property="og:title"       content="0xDefalt — Alpha, Automação & Web3" />
+  <meta property="og:title"       content="0xDefalt — Alpha, Automação & Web3 para Traders" />
   <meta property="og:description" content="Content Creator · Build · Dev. Automação no X, análise de sentimentos e previsões na Polymarket. Transformando dados em lucro real." />
   <meta property="og:image"       content="https://0x-defalt.github.io/profile.jpg" />
   <meta property="og:image:width"  content="1200" />
@@ -180,6 +180,41 @@
     }
     .footer-twitter svg { width: 15px; height: 15px; fill: var(--neon); }
 
+    /* POLYMARKET SLIDER */
+    #poly-slider-wrapper { position: relative; overflow: hidden; }
+    #poly-loading { color: var(--dim-text); font-size: 0.9rem; font-family: var(--font-header); padding: 20px 0; }
+    #poly-slider { display: flex; transition: transform 0.5s ease; }
+    .poly-slide {
+      min-width: 100%; display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
+    }
+    .poly-card {
+      background: var(--card-bg); border: 1px solid #222;
+      padding: 24px; border-radius: 12px; transition: 0.3s;
+      text-decoration: none; color: inherit; display: block;
+    }
+    .poly-card:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,255,157,0.1); }
+    .poly-card-title { font-family: var(--font-header); font-weight: 700; font-size: 1rem; margin-bottom: 14px; line-height: 1.4; }
+    .poly-outcomes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .poly-outcome {
+      display: flex; align-items: center; gap: 6px;
+      background: #1a1a1a; border: 1px solid #333;
+      border-radius: 6px; padding: 6px 12px; font-size: 0.82rem;
+      font-family: var(--font-header); font-weight: 500;
+    }
+    .poly-outcome.yes { border-color: rgba(0,255,157,0.4); color: var(--neon); }
+    .poly-outcome.no  { border-color: rgba(255,80,80,0.4); color: #ff5050; }
+    .poly-bar-wrap { background: #1a1a1a; border-radius: 4px; height: 4px; overflow: hidden; margin-bottom: 10px; }
+    .poly-bar { height: 100%; background: var(--neon); border-radius: 4px; transition: width 0.8s ease; }
+    .poly-meta { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--dim-text); font-family: var(--font-header); }
+    .poly-vol { color: var(--neon); font-weight: 700; }
+    #poly-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
+    .poly-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #333; cursor: pointer; transition: 0.3s;
+    }
+    .poly-dot.active { background: var(--neon); box-shadow: 0 0 8px var(--neon); }
+
     @media (max-width: 850px) {
       .hero { flex-direction: column-reverse; text-align: center; padding-top: 100px; }
       .hero-content h1 { font-size: 2.2rem; }
@@ -233,6 +268,15 @@
           <p>Análise de segurança de contratos e identificação de padrões de pump and dump.</p>
         </a>
       </div>
+    </section>
+
+    <section id="polymarket-live" class="animate-entry" style="animation-delay: 0.7s; margin-bottom: 100px;">
+        <span class="section-title">Polymarket — Mercados em Alta</span>
+        <div id="poly-slider-wrapper">
+          <div id="poly-loading">Carregando mercados...</div>
+          <div id="poly-slider"></div>
+          <div id="poly-dots"></div>
+        </div>
     </section>
 
     <section id="links" class="animate-entry" style="animation-delay: 0.8s; margin-bottom: 100px;">
@@ -298,7 +342,81 @@
       }
     });
 
-    window.addEventListener('scroll', function() {
+    // POLYMARKET LIVE MARKETS
+    (async function() {
+      const loading = document.getElementById('poly-loading');
+      const slider  = document.getElementById('poly-slider');
+      const dotsEl  = document.getElementById('poly-dots');
+      let current   = 0;
+      let slides    = [];
+
+      function formatVol(n) {
+        if (n >= 1e6) return '$' + (n/1e6).toFixed(1) + 'M';
+        if (n >= 1e3) return '$' + (n/1e3).toFixed(0) + 'K';
+        return '$' + n.toFixed(0);
+      }
+
+      function buildSlides(markets) {
+        const perSlide = 3;
+        for (let i = 0; i < markets.length; i += perSlide) {
+          const chunk = markets.slice(i, i + perSlide);
+          const slide = document.createElement('div');
+          slide.className = 'poly-slide';
+          chunk.forEach(m => {
+            const outcomes = (m.outcomes || ['Yes','No']);
+            const prices   = (m.outcomePrices || ['0.5','0.5']).map(Number);
+            const yesPct   = Math.round((prices[0] || 0.5) * 100);
+            const vol      = parseFloat(m.volume || 0);
+            const slug     = m.slug || '';
+            const card = document.createElement('a');
+            card.className = 'poly-card';
+            card.href = `https://polymarket.com/event/${slug}`;
+            card.target = '_blank';
+            card.rel = 'noopener';
+            card.innerHTML = `
+              <div class="poly-card-title">${m.question || m.title || 'Mercado'}</div>
+              <div class="poly-outcomes">
+                <div class="poly-outcome yes">${outcomes[0] || 'Yes'} <strong>${yesPct}%</strong></div>
+                <div class="poly-outcome no">${outcomes[1] || 'No'} <strong>${100-yesPct}%</strong></div>
+              </div>
+              <div class="poly-bar-wrap"><div class="poly-bar" style="width:${yesPct}%"></div></div>
+              <div class="poly-meta">
+                <span>Volume: <span class="poly-vol">${formatVol(vol)}</span></span>
+                <span>→ Ver mercado</span>
+              </div>`;
+            slide.appendChild(card);
+          });
+          slider.appendChild(slide);
+          slides.push(slide);
+        }
+
+        // dots
+        slides.forEach((_, i) => {
+          const dot = document.createElement('div');
+          dot.className = 'poly-dot' + (i === 0 ? ' active' : '');
+          dot.addEventListener('click', () => goTo(i));
+          dotsEl.appendChild(dot);
+        });
+
+        // auto-play
+        setInterval(() => goTo((current + 1) % slides.length), 5000);
+      }
+
+      function goTo(n) {
+        current = n;
+        slider.style.transform = `translateX(-${n * 100}%)`;
+        document.querySelectorAll('.poly-dot').forEach((d, i) => d.classList.toggle('active', i === n));
+      }
+
+      try {
+        const res  = await fetch('https://gamma-api.polymarket.com/markets?closed=false&limit=12&order=volume&ascending=false');
+        const data = await res.json();
+        loading.style.display = 'none';
+        buildSlides(data);
+      } catch(e) {
+        loading.textContent = 'Não foi possível carregar os mercados agora.';
+      }
+    })();
         const scrolled = window.pageYOffset;
         const profile = document.querySelector('.profile-wrapper');
         const limit = 300; 
