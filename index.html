@@ -10,7 +10,7 @@
   <!-- Open Graph / Link Preview -->
   <meta property="og:type"        content="website" />
   <meta property="og:url"         content="https://0x-defalt.github.io/" />
-  <meta property="og:title"       content="0xDefalt — Alpha, Automação & Web3" />
+  <meta property="og:title"       content="0xDefalt — Alpha, Automação & Web3 para Traders" />
   <meta property="og:description" content="Content Creator · Builder · Dev. Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket. Transformando Dados em Lucro Real." />
   <meta property="og:image"       content="https://0x-defalt.github.io/profile.jpg" />
   <meta property="og:image:width"  content="1200" />
@@ -344,7 +344,14 @@
     fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&limit=12&order=volume&ascending=false')
       .then(r => r.json())
       .then(data => {
-        const markets = data.filter(m => m.question && m.outcomePrices);
+        const markets = data.filter(m => {
+          if (!m.question || !m.outcomePrices) return false;
+          if (m.question.toLowerCase().includes('did not forecast')) return false;
+          if (m.question.toLowerCase().includes('n/a')) return false;
+          const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
+          if (!prices || prices.length < 2) return false;
+          return true;
+        });
         const grid = document.getElementById('poly-grid');
         let idx = 0;
 
@@ -360,7 +367,7 @@
               const fvol = vol >= 1e6 ? '$' + (vol/1e6).toFixed(1) + 'M' : vol >= 1e3 ? '$' + (vol/1e3).toFixed(0) + 'K' : '$' + vol.toFixed(0);
               const el = document.createElement('a');
               el.className = 'card';
-              el.href = 'https://polymarket.com/event/' + (m.slug || '');
+              el.href = 'https://polymarket.com/event/' + (m.groupSlug || m.conditionId || m.slug || '');
               el.target = '_blank';
               el.rel = 'noopener';
               el.innerHTML = `
