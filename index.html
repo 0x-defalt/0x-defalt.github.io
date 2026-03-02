@@ -29,8 +29,8 @@
     #particles-js { 
       position: fixed; 
       top: 0; left: 0; width: 100%; height: 100%; 
-      z-index: -1; /* Fica atras de tudo */
-      opacity: 0.4; /* Sutil para nao poluir */
+      z-index: -1;
+      opacity: 0.4;
     }
 
     /* KEYFRAMES PARA ANIMACOES */
@@ -45,7 +45,6 @@
       100% { text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); }
     }
 
-    /* APLICANDO ANIMACAO DE ENTRADA */
     .animate-entry {
       animation: fadeInSlide 0.8s ease-out forwards;
       opacity: 0;
@@ -83,7 +82,6 @@
     .hero { padding: 150px 0 80px; display: flex; align-items: center; gap: 50px; }
     .hero-content { flex: 1; }
     
-    /* TITULO COM GLOW ANIMATION */
     .hero-content h1 { 
       font-size: 3.5rem; line-height: 1.1; margin: 0 0 20px; 
       font-weight: 700; font-family: var(--font-header); text-transform: uppercase;
@@ -91,7 +89,6 @@
     }
     .hero-content p { font-size: 1.2rem; color: var(--dim-text); margin-bottom: 30px; }
 
-    /* FOTO DE PERFIL COM EFEITO PARALLAX SUTIL */
     .profile-wrapper { 
         position: relative; width: 300px; height: 300px; flex-shrink: 0; 
         transition: transform 0.1s ease-out;
@@ -107,7 +104,6 @@
       border: 2px solid var(--neon); border-radius: 20px; z-index: -1; opacity: 0.3;
     }
 
-    /* GRID DE INFORMACOES (CARDS) */
     .section-title { 
         font-size: 0.8rem; text-transform: uppercase; color: var(--neon); 
         letter-spacing: 3px; margin-bottom: 40px; display: block; 
@@ -122,7 +118,6 @@
     .card h3 { margin: 0 0 10px; font-size: 1.3rem; font-family: var(--font-header); font-weight: 700; }
     .card p { color: var(--dim-text); margin: 0; font-size: 0.95rem; }
 
-    /* BOTAO DE CHAMADA */
     .btn-main {
       display: inline-block; background: var(--neon); color: #000; padding: 15px 35px;
       border-radius: 8px; text-decoration: none; font-weight: 700; transition: 0.3s;
@@ -130,9 +125,29 @@
     }
     .btn-main:hover { box-shadow: 0 0 30px rgba(0, 255, 157, 0.5); transform: scale(1.05); }
 
-    footer { padding: 50px 0; border-top: 1px solid #222; color: #444; font-size: 0.8rem; text-align: center; font-family: var(--font-header); }
+    /* FOOTER */
+    footer { 
+      padding: 50px 0; border-top: 1px solid #222; 
+      color: #444; font-size: 0.8rem; text-align: center; 
+      font-family: var(--font-header); 
+    }
+    .footer-twitter {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 14px;
+      color: var(--neon); text-decoration: none;
+      font-family: var(--font-header); font-weight: 700;
+      font-size: 0.85rem; letter-spacing: 1px;
+      border: 1px solid rgba(0, 255, 157, 0.3);
+      padding: 8px 20px; border-radius: 6px;
+      transition: 0.3s;
+    }
+    .footer-twitter:hover { 
+      background: rgba(0, 255, 157, 0.08); 
+      border-color: var(--neon); 
+      box-shadow: 0 0 15px rgba(0, 255, 157, 0.2); 
+    }
+    .footer-twitter svg { width: 15px; height: 15px; fill: var(--neon); }
 
-    /* RESPONSIVIDADE */
     @media (max-width: 850px) {
       .hero { flex-direction: column-reverse; text-align: center; padding-top: 100px; }
       .hero-content h1 { font-size: 2.2rem; }
@@ -160,8 +175,8 @@
     <section class="hero" id="about">
       <div class="hero-content animate-entry" style="animation-delay: 0.2s;">
         <span class="section-title">Verified Trader & Dev</span>
-        <h1>O Alpha que voce procura, sem ruido.</h1>
-        <p>Especialista em automacao no X, analise de sentimentos e previsoes na Polymarket. Transformando dados em lucro real.</p>
+        <h1>O Alpha que você procura, sem ruído.</h1>
+        <p>Especialista em automação no X, análise de sentimentos e previsões na Polymarket. Transformando dados em lucro real.</p>
         <a href="https://t.me/SEU_CANAL" class="btn-main">Entrar no Telegram Alpha</a>
       </div>
       
@@ -175,15 +190,15 @@
       <div class="grid">
         <a href="#" class="card">
           <h3>Polymarket Tools</h3>
-          <p>Automacoes exclusivas para monitorar odds e prever movimentacoes de baleias antes do mercado reagir.</p>
+          <p>Automações exclusivas para monitorar odds e prever movimentações de baleias antes do mercado reagir.</p>
         </a>
         <a href="#" class="card">
           <h3>X (Twitter) Bots</h3>
-          <p>Scripts de monitoramento de mencoes e analise de sentimentos em tempo real para moedas de baixa liquidez.</p>
+          <p>Scripts de monitoramento de menções e análise de sentimentos em tempo real para moedas de baixa liquidez.</p>
         </a>
         <a href="#" class="card">
           <h3>Consultoria Web3</h3>
-          <p>Analise de seguranca de contratos e identificacao de padroes de "pump and dump".</p>
+          <p>Análise de segurança de contratos e identificação de padrões de pump and dump.</p>
         </a>
       </div>
     </section>
@@ -193,23 +208,43 @@
         <div class="grid">
             <a href="https://polymarket.com/?via=REF" class="card">
                 <h3>Polymarket Ref</h3>
-                <p>Ganhe bonus ao operar pelo link oficial da comunidade.</p>
+                <p>Ganhe bônus ao operar pelo link oficial da comunidade.</p>
             </a>
-            <a href="https://binance.com" class="card">
-                <h3>Binance Pro</h3>
-                <p>Liquidez imediata para execucoes de alta frequencia.</p>
+            <a href="#" class="card">
+                <h3>Automação</h3>
+                <p>Acesse os scripts e ferramentas de automação para monitoramento de mercado, alertas on-chain e execução de estratégias sem intervenção manual.</p>
             </a>
+        </div>
+    </section>
+
+    <section id="produtividade" class="animate-entry" style="animation-delay: 1s; margin-bottom: 100px;">
+        <span class="section-title">Produtividade</span>
+        <div class="grid">
+            <div class="card">
+                <h3>Sistemas & Fluxos</h3>
+                <p>Frameworks pessoais para operar com consistência: gestão de risco automatizada, rotinas de revisão de portfólio e dashboards que eliminam o ruído e mantêm o foco no que gera retorno.</p>
+            </div>
+            <div class="card">
+                <h3>Menos Ruído, Mais Sinal</h3>
+                <p>Métodos e ferramentas para filtrar informação, automatizar tarefas repetitivas e liberar tempo para o que realmente importa — identificar oportunidades antes da maioria.</p>
+            </div>
         </div>
     </section>
 
   </main>
 
   <footer>
-    2026 0xDefalt.hood - Built for the future of finance.
+    <div>
+      <a href="https://twitter.com/0xDefalt" target="_blank" class="footer-twitter">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        @0xDefalt
+      </a>
+    </div>
   </footer>
 
   <script>
-    // INICIANDO AS PARTICULAS
     particlesJS("particles-js", {
       "particles": {
         "number": { "value": 70 },
@@ -231,7 +266,6 @@
       }
     });
 
-    // Efeito Parallax simples na foto
     window.addEventListener('scroll', function() {
         const scrolled = window.pageYOffset;
         const profile = document.querySelector('.profile-wrapper');
