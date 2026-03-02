@@ -320,10 +320,9 @@
         allMarkets = data.filter(m => {
           if (!m.question || !m.outcomePrices || !m.slug) return false;
           if (m.question.toLowerCase().includes('did not forecast')) return false;
-          if (m.active === false || m.closed === true) return false;
+          // Removido o filtro de active/closed pra mostrar mercados mesmo se active false
           const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
           if (!prices || prices.length < 2) return false;
-          // Removido o filtro de yes >90 ou <10 pra mostrar TODOS os mercados ativos
           return true;
         });
 
