@@ -429,24 +429,39 @@
     }
 
     // Inicializa
-    loadPolymarketMarkets();
+   async function loadPolymarketMarkets() {
+  try {
+    const response = await fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&limit=50&order=volume&ascending=false');
+    
+    if (!response.ok) throw new Error('API error');
 
-    // Atualiza os preços/volume em tempo real a cada 32 segundos
-    setInterval(loadPolymarketMarkets, 32000);
+    const data = await response.json();
 
-    // Continua rotacionando os cards a cada 5s (com dados sempre atualizados)
-    setInterval(renderPolyCards, 5000);
+    allMarkets = data.filter(m => {
+      // FILTRO MÍNIMO DE MERCADOS VÁLIDOS / ATUAIS
+      if (!m.question || !m.outcomePrices || !m.slug) return false;
+      if (m.question.toLowerCase().includes('did not forecast')) return false;
+      if (m.active === false || m.closed === true) return false;
+      
+      const prices = typeof m.outcomePrices === 'string' 
+        ? JSON.parse(m.outcomePrices) 
+        : m.outcomePrices;
+      
+      if (!prices || prices.length < 2) return false;
 
-    // Parallax na foto (mantido exatamente igual)
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const profile = document.querySelector('.profile-wrapper');
-        const limit = 300; 
-        if (scrolled < limit && profile) {
-            profile.style.transform = `translateY(${scrolled * 0.2}px)`;
-        }
+      // ← REMOVI COMPLETAMENTE o filtro de 90%/10%
+      // Agora mostra quase todos os mercados atuais em alta
+
+      return true;
     });
-  </script>
 
-</body>
-</html>
+    if (allMarkets.length === 0) {
+      polyGrid.innerHTML = '<div class="card"><p style="color:var(--dim-text);">Nenhum mercado disponível.</p></div>';
+      return;
+    }
+
+    renderPolyCards();
+  } catch (err) {
+    console.error('Polymarket fetch error:', err);
+  }
+}
