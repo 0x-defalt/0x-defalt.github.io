@@ -305,7 +305,7 @@
       }
     });
 
-    // ====================== POLYMARKET — ROTACIONANDO + 99% e 1% BLOQUEADOS ======================
+    // ====================== POLYMARKET — ROTACIONANDO DE VERDADE (sem repetir) ======================
     let allMarkets = [];
     let politicsIdx = 0;
     let cryptoIdx = 0;
@@ -314,7 +314,7 @@
 
     async function loadPolymarketMarkets() {
       try {
-        const response = await fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&active=true&limit=60&order=volume&ascending=false');
+        const response = await fetch('https://corsproxy.io/?https://gamma-api.polymarket.com/markets?closed=false&active=true&limit=100&order=volume&ascending=false');
         if (!response.ok) throw new Error();
 
         const data = await response.json();
@@ -327,9 +327,9 @@
           const prices = typeof m.outcomePrices === 'string' ? JSON.parse(m.outcomePrices) : m.outcomePrices;
           if (!prices || prices.length < 2) return false;
 
-          // FILTRO FORTE ANTI-RESOLVIDOS (bloqueia 99%, 1%, 100%, 0%, 95%+, etc)
+          // BLOQUEIA SÓ OS REALMENTE RESOLVIDOS (0% e 99%+)
           const yes = Math.round(parseFloat(prices[0]) * 100);
-          if (yes <= 5 || yes >= 95) return false;
+          if (yes <= 1 || yes >= 99) return false;
 
           return true;
         });
@@ -389,22 +389,24 @@
         polyGrid.style.transition = 'opacity 0.5s';
         polyGrid.style.opacity = '1';
 
+        // AVANÇA OS ÍNDICES → ROTACIONA DE VERDADE
         politicsIdx++;
         cryptoIdx++;
         sportsIdx++;
       }, 350);
     }
 
+    // Inicia + atualiza preços + rotação
     loadPolymarketMarkets();
     setInterval(loadPolymarketMarkets, 30000);
     setInterval(() => { if (allMarkets.length) renderCategorizedCards(); }, 5000);
 
+    // Parallax
     window.addEventListener('scroll', function() {
         const scrolled = window.pageYOffset;
         const profile = document.querySelector('.profile-wrapper');
         if (scrolled < 300 && profile) profile.style.transform = `translateY(${scrolled * 0.2}px)`;
     });
   </script>
-
 </body>
 </html>
