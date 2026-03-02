@@ -4,157 +4,150 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>0xDefalt | Alpha & Automation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-    :root { 
-      --neon: #00ff9d; 
-      --bg: #000000; 
-      --gray: #1a1a1a;
+    :root {
+      --neon: #00ff9d;
+      --bg: #050505;
+      --card-bg: #111111;
       --text: #ffffff;
+      --dim-text: #888888;
     }
 
-    * { box-sizing: border-box; cursor: crosshair; }
-
+    * { box-sizing: border-box; scroll-behavior: smooth; }
     body { 
-      margin: 0; 
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-      background: var(--bg); 
-      color: var(--text); 
-      overflow-x: hidden;
-      line-height: 1.5;
+      margin: 0; font-family: 'Inter', sans-serif; 
+      background: var(--bg); color: var(--text); line-height: 1.6;
     }
 
-    /* Efeito de ruído de fundo (estética X/Crypto) */
-    body::after {
-      content: "";
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background-image: url("https://upload.wikimedia.org/wikipedia/commons/5/5a/Can_Static_Noise.gif");
-      opacity: 0.03; z-index: 10; pointer-events: none;
+    /* HEADER FIXO */
+    header {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(10px);
+      border-bottom: 1px solid #222;
+    }
+    nav {
+      max-width: 1100px; margin: 0 auto; padding: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo { font-weight: 900; font-size: 1.2rem; letter-spacing: -1px; text-transform: uppercase; }
+    .nav-links a { color: var(--dim-text); text-decoration: none; margin-left: 25px; font-size: 0.9rem; transition: 0.3s; }
+    .nav-links a:hover { color: var(--neon); }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    /* SEÇÃO HERO */
+    .hero { padding: 150px 0 80px; display: flex; align-items: center; gap: 50px; }
+    .hero-content { flex: 1; }
+    .hero-content h1 { font-size: 4rem; line-height: 1; margin: 0 0 20px; font-weight: 900; }
+    .hero-content p { font-size: 1.25rem; color: var(--dim-text); margin-bottom: 30px; }
+
+    /* FOTO DE PERFIL COM EFEITO */
+    .profile-wrapper { position: relative; width: 300px; height: 300px; }
+    .profile-img { 
+      width: 100%; height: 100%; object-fit: cover; 
+      border-radius: 20px; border: 1px solid #333;
+      filter: grayscale(1) contrast(1.1); transition: 0.5s;
+    }
+    .profile-wrapper:hover .profile-img { filter: grayscale(0); border-color: var(--neon); }
+    .profile-wrapper::after {
+      content: ""; position: absolute; top: 15px; left: 15px; width: 100%; height: 100%;
+      border: 2px solid var(--neon); border-radius: 20px; z-index: -1; opacity: 0.3;
     }
 
-    .container { max-width: 700px; margin: 0 auto; padding: 100px 24px; }
-
-    /* Header Minimalista como pedido */
-    header { margin-bottom: 80px; }
-    h1 { 
-      font-size: 4rem; 
-      font-weight: 900; 
-      letter-spacing: -3px; 
-      margin: 0;
-      text-transform: uppercase;
-      color: var(--text);
+    /* GRID DE INFORMAÇÕES (CARDS) */
+    .section-title { font-size: 0.8rem; text-transform: uppercase; color: var(--neon); letter-spacing: 3px; margin-bottom: 40px; display: block; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 100px; }
+    .card { 
+      background: var(--card-bg); border: 1px solid #222; padding: 30px; 
+      border-radius: 12px; transition: 0.3s; text-decoration: none; color: inherit;
     }
+    .card:hover { border-color: var(--neon); transform: translateY(-5px); }
+    .card h3 { margin: 0 0 10px; font-size: 1.5rem; }
+    .card p { color: var(--dim-text); margin: 0; font-size: 0.95rem; }
 
-    .bio { 
-      font-size: 1.2rem; 
-      color: #888; 
-      margin-top: 10px; 
-      border-left: 2px solid var(--neon);
-      padding-left: 20px;
-      max-width: 500px;
+    /* BOTÃO DE CHAMADA */
+    .btn-main {
+      display: inline-block; background: var(--neon); color: #000; padding: 15px 35px;
+      border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s;
     }
+    .btn-main:hover { box-shadow: 0 0 30px rgba(0, 255, 157, 0.5); transform: scale(1.05); }
 
-    /* Grid de Links Inspirada em Feeds de Alpha */
-    .link-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 50px; }
+    footer { padding: 50px 0; border-top: 1px solid #222; color: #444; font-size: 0.8rem; text-align: center; }
 
-    .card {
-      background: var(--gray);
-      border: 1px solid #333;
-      padding: 24px;
-      text-decoration: none;
-      color: var(--text);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-
-    .card:hover {
-      border-color: var(--neon);
-      background: #0a0a0a;
-      transform: scale(1.02);
-    }
-
-    .card-info h2 { margin: 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
-    .card-info p { margin: 5px 0 0; font-size: 0.85rem; color: #888; }
-
-    .arrow { color: var(--neon); font-weight: bold; font-size: 1.2rem; }
-
-    /* Badge de "Live" ou "Active" */
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.7rem;
-      background: rgba(0, 255, 157, 0.1);
-      color: var(--neon);
-      padding: 4px 12px;
-      border-radius: 100px;
-      text-transform: uppercase;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    .dot { width: 6px; height: 6px; background: var(--neon); border-radius: 50%; animation: pulse 1.5s infinite; }
-
-    @keyframes pulse {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(1.5); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    footer { margin-top: 100px; font-size: 0.8rem; color: #444; text-align: left; }
-
-    @media (max-width: 600px) {
-      h1 { font-size: 3rem; }
+    /* RESPONSIVIDADE */
+    @media (max-width: 850px) {
+      .hero { flex-direction: column-reverse; text-align: center; padding-top: 100px; }
+      .hero-content h1 { font-size: 2.5rem; }
+      .profile-wrapper { width: 200px; height: 200px; margin: 0 auto; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="status-badge">
-      <div class="dot"></div> System Online: Monitoring Polymarket
-    </div>
-
-    <header>
-      <h1>0xDefalt</h1>
-      <div class="bio">
-        Alpha real de Polymarket, automação no X e oportunidades crypto sem ruído. Onde a execução encontra o dado.
+  <header>
+    <nav>
+      <div class="logo">0xDefalt</div>
+      <div class="nav-links">
+        <a href="#about">Sobre</a>
+        <a href="#alpha">Alpha</a>
+        <a href="#links">Links</a>
       </div>
-    </header>
+    </nav>
+  </header>
 
-    <div class="link-stack">
-      <a href="https://polymarket.com/?via=SEU_REFERRAL" class="card">
-        <div class="card-info">
-          <h2>Polymarket Alpha</h2>
-          <p>Onde o smart money aposta. Use meu referral.</p>
+  <main class="container">
+    
+    <section class="hero" id="about">
+      <div class="hero-content">
+        <span class="section-title">Verified Trader & Dev</span>
+        <h1>O Alpha que você procura, sem o ruído que você odeia.</h1>
+        <p>Especialista em automação no X, análise de sentimentos e previsões na Polymarket. Transformando dados em lucro real.</p>
+        <a href="https://t.me/SEU_CANAL" class="btn-main">Entrar no Telegram Alpha</a>
+      </div>
+      
+      <div class="profile-wrapper">
+        <img src="https://via.placeholder.com/400x400?text=0xDefalt" alt="0xDefalt" class="profile-img">
+      </div>
+    </section>
+
+    <section id="alpha">
+      <span class="section-title">O Ecossistema</span>
+      <div class="grid">
+        <a href="#" class="card">
+          <h3>Polymarket Tools</h3>
+          <p>Automações exclusivas para monitorar odds e prever movimentações de baleias antes do mercado reagir.</p>
+        </a>
+        <a href="#" class="card">
+          <h3>X (Twitter) Bots</h3>
+          <p>Scripts de monitoramento de menções e análise de sentimentos em tempo real para moedas de baixa liquidez.</p>
+        </a>
+        <a href="#" class="card">
+          <h3>Consultoria Web3</h3>
+          <p>Análise de segurança de contratos e identificação de padrões de "pump and dump".</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="links" style="margin-bottom: 100px;">
+        <span class="section-title">Direct Links</span>
+        <div class="grid">
+            <a href="https://polymarket.com/?via=REF" class="card" style="border-style: dashed;">
+                <h3>Polymarket Ref →</h3>
+                <p>Ganhe bônus ao operar pelo link oficial da comunidade.</p>
+            </a>
+            <a href="https://binance.com" class="card" style="border-style: dashed;">
+                <h3>Binance Pro →</h3>
+                <p>Liquidez imediata para execuções de alta frequência.</p>
+            </a>
         </div>
-        <div class="arrow">→</div>
-      </a>
+    </section>
 
-      <a href="https://t.me/SEU_CANAL" class="card">
-        <div class="card-info">
-          <h2>Telegram Exclusivo</h2>
-          <p>Alertas de automação e sinais em tempo real.</p>
-        </div>
-        <div class="arrow">→</div>
-      </a>
+  </main>
 
-      <a href="https://binance.com/?ref=SEU_REFERRAL" class="card">
-        <div class="card-info">
-          <h2>Binance Setup</h2>
-          <p>Liquidez para suas operações de arbitragem.</p>
-        </div>
-        <div class="arrow">→</div>
-      </a>
-    </div>
-
-    <footer>
-      $ NO SCAMS. NO NOISE. JUST DATA. <br>
-      © 2026 0xDefalt - Built for the 1%
-    </footer>
-  </div>
+  <footer>
+    © 2026 0xDefalt.hood - Built for the future of finance.
+  </footer>
 
 </body>
 </html>
