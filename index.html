@@ -166,10 +166,10 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* HEADER FIXO (agora abaixo do ticker) */
+    /* HEADER FIXO */
     header {
       position: fixed;
-      top: 40px; /* logo abaixo do ticker */
+      top: 40px;
       left: 0;
       width: 100%;
       z-index: 150;
@@ -207,7 +207,7 @@
     .container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 140px 20px 0; /* 40 (ticker) + 80 (header) + 20 de respiro */
+      padding: 140px 20px 0;
       position: relative;
       z-index: 1;
     }
@@ -476,55 +476,45 @@
     });
   </script>
 
-  <!-- Script para carregar mercados ao vivo no ticker via Cloudflare Worker -->
+  <!-- Script para carregar mercados ao vivo no ticker (usando worker) -->
   <script>
-    // URL base do worker (substitua se necessário)
+    // URL do worker (substitua se necessário)
     const WORKER_URL = 'https://polymarket-proxy2.0xdefalt.workers.dev';
 
-    // Função para buscar mercados da Polymarket via worker
-    async function fetchMarketsByCategory(category, limit = 8) {
-      // Mapeamento de categorias amigáveis para as usadas na API
-      // Para "Breaking News", tentamos primeiro "Breaking News", depois "Politics" como fallback
-      const categoriesToTry = category === 'Breaking News' 
-        ? ['Breaking News', 'Politics'] 
-        : [category];
-      
-      for (const cat of categoriesToTry) {
+    // Função para buscar mercados com fallback de categorias
+    async function fetchMarketsWithFallback(categories, limit = 8) {
+      for (const cat of categories) {
         const url = `${WORKER_URL}/markets?category=${encodeURIComponent(cat)}&active=true&closed=false&limit=${limit}&order=volume`;
-        
         try {
-          console.log(`Tentando categoria: ${cat} para ${category} via worker`);
+          console.log(`Tentando categoria: ${cat} -> ${url}`);
           const response = await fetch(url);
           if (!response.ok) {
-            console.warn(`Resposta não OK para ${cat}: ${response.status}`);
+            console.warn(`Categoria ${cat} falhou com status ${response.status}`);
             continue;
           }
           const data = await response.json();
           if (data && data.length > 0) {
             console.log(`Categoria ${cat} retornou ${data.length} mercados`);
-            return data;
+            // Opcional: filtrar mercados com mais de 30 dias
+            const dataLimite = new Date();
+            dataLimite.setDate(dataLimite.getDate() - 30);
+            const recentes = data.filter(m => new Date(m.endDate) > dataLimite);
+            if (recentes.length > 0) return recentes;
+            else return data; // se não houver recentes, retorna todos
           }
-        } catch (error) {
-          console.warn(`Erro ao buscar categoria ${cat}:`, error);
+        } catch (e) {
+          console.warn(`Erro ao buscar categoria ${cat}:`, e);
         }
       }
-      
-      // Se todas as tentativas falharem, retorna array vazio
-      console.log(`Nenhum mercado encontrado para ${category}`);
-      return [];
+      return []; // nenhuma categoria funcionou
     }
 
     // Função para gerar HTML de um item do ticker
     function createTickerItem(market) {
-      // A API retorna um array de outcomes, cada um com "price"
-      // Vamos pegar o primeiro outcome (geralmente "Yes") e calcular a probabilidade
       const outcome = market.outcomes?.[0];
       const probability = outcome ? Math.round(outcome.price * 100) : 0;
-      
-      // Limitar título a ~35 caracteres para não poluir
       let title = market.question || 'Mercado';
       if (title.length > 35) title = title.substring(0, 35) + '…';
-      
       return `
         <div class="ticker-item">
           <span>${title}</span>
@@ -534,47 +524,41 @@
       `;
     }
 
-    // Função para preencher um ticker e clonar para o efeito infinito
+    // Função para preencher um ticker
     function fillTicker(elementId, markets) {
       const container = document.getElementById(elementId);
       if (!container) return;
-      
       if (markets.length === 0) {
         container.innerHTML = `<div class="ticker-item">Sem dados</div>`;
         return;
       }
-      
-      // Gerar HTML para todos os mercados
       let itemsHtml = '';
       markets.forEach(market => {
         itemsHtml += createTickerItem(market);
       });
-      
-      // Para o efeito de rolagem contínua, duplicamos o conteúdo
+      // Duplica para efeito infinito
       container.innerHTML = itemsHtml + itemsHtml;
-      
-      // Ajustar duração da animação baseada na largura (opcional)
-      const width = container.scrollWidth / 2; // largura de uma cópia
-      const duration = Math.max(20, Math.min(60, width / 50)); // entre 20s e 60s
+      const width = container.scrollWidth / 2;
+      const duration = Math.max(20, Math.min(60, width / 50));
       container.style.animationDuration = `${duration}s`;
     }
 
-    // Função principal para carregar e exibir os mercados
+    // Função principal
     async function loadTickers() {
-      const [breakingNews, crypto] = await Promise.all([
-        fetchMarketsByCategory('Breaking News', 8),
-        fetchMarketsByCategory('Crypto', 8)
-      ]);
+      // Breaking News: tenta várias categorias
+      const breakingNews = await fetchMarketsWithFallback(
+        ['Breaking News', 'Politics', 'Technology'], 
+        8
+      );
+      // Crypto: tenta apenas Crypto
+      const crypto = await fetchMarketsWithFallback(['Crypto'], 8);
       
       fillTicker('ticker-breaking', breakingNews);
       fillTicker('ticker-crypto', crypto);
     }
 
-    // Executar quando a página carregar
     document.addEventListener('DOMContentLoaded', loadTickers);
-
-    // Atualizar a cada 5 minutos
-    setInterval(loadTickers, 300000);
+    setInterval(loadTickers, 300000); // atualiza a cada 5 min
   </script>
 </body>
 </html>
