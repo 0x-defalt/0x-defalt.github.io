@@ -160,50 +160,90 @@
     });
   </script>
 
-  <script>
-    const WORKER_URL = 'https://polymarket-proxy2.0xdefalt.workers.dev';
+<script>
+  const WORKER_URL = 'https://polymarket-proxy2.0xdefalt.workers.dev';
 
-    async function loadCategory(category) {
-      const url = category ? WORKER_URL + '?category=' + encodeURIComponent(category) : WORKER_URL;
+  // Função para buscar mercados de uma categoria (com parâmetros corretos)
+  async function fetchMarkets(category, limit = 8) {
+    const url = `${WORKER_URL}/markets?category=${encodeURIComponent(category)}&active=true&closed=false&limit=${limit}&order=volume`;
+    console.log('Buscando:', url); // Para depuração
+    try {
       const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       return Array.isArray(data) ? data : [];
+    } catch (e) {
+      console.warn(`Erro ao buscar ${category}:`, e);
+      return [];
+    }
+  }
+
+  // Função para preencher o ticker com os mercados
+  function fillTicker(elementId, markets) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    if (!markets || markets.length === 0) {
+      el.innerHTML = `<div class="ticker-item">Sem dados</div>`;
+      return;
     }
 
-    function fillTicker(id, markets) {
-      const el = document.getElementById(id);
-      if (!el || !markets.length) return;
-      let items = '';
-      markets.slice(0, 12).forEach(function(m) {
-        const mk = m.markets && m.markets[0] ? m.markets[0] : {};
-        const raw = mk.outcomePrices || ['0.5'];
-        const prices = typeof raw === 'string' ? JSON.parse(raw) : raw;
-        const prob = Math.round(parseFloat(prices[0]) * 100);
-        let title = m.title || m.question || 'Mercado';
-        if (title.length > 40) title = title.slice(0, 40) + '...';
-        const slug = m.slug || '';
-        const href = slug ? 'https://polymarket.com/event/' + slug : 'https://polymarket.com';
-        items += '<div class="ticker-item" style="cursor:pointer;" onclick="window.open(\'' + href + '\',\'_blank\')"><span>' + title + '</span><span class="prob">' + prob + '%</span></div><span class="separator">•</span>';
-      });
-      el.innerHTML = items + items;
-      const duration = Math.max(20, Math.min(80, el.scrollWidth / 2 / 50));
-      el.style.animationDuration = duration + 's';
+    let items = '';
+    markets.slice(0, 8).forEach(m => {
+      // Extrai a probabilidade do primeiro outcome (geralmente "Sim")
+      let prob = 50; // fallback
+      if (m.outcomePrices && Array.isArray(m.outcomePrices)) {
+        prob = Math.round(parseFloat(m.outcomePrices[0]) * 100);
+      } else if (m.outcomes && m.outcomes[0] && m.outcomes[0].price) {
+        prob = Math.round(m.outcomes[0].price * 100);
+      }
+
+      let title = m.question || 'Mercado';
+      if (title.length > 40) title = title.slice(0, 40) + '…';
+
+      const slug = m.slug || '';
+      const href = slug ? `https://polymarket.com/event/${slug}` : 'https://polymarket.com';
+
+      items += `<div class="ticker-item" style="cursor:pointer;" onclick="window.open('${href}','_blank')"><span>${title}</span><span class="prob">${prob}%</span></div><span class="separator">•</span>`;
+    });
+
+    // Duplica para rolagem infinita
+    el.innerHTML = items + items;
+    const width = el.scrollWidth / 2;
+    const duration = Math.max(20, Math.min(60, width / 50));
+    el.style.animationDuration = duration + 's';
+  }
+
+  // Função principal
+  async function loadTickers() {
+    // Breaking News: tenta várias categorias em ordem
+    const breakingCategories = ['Breaking News', 'Politics', 'Technology'];
+    let breakingMarkets = [];
+    for (const cat of breakingCategories) {
+      breakingMarkets = await fetchMarkets(cat, 8);
+      if (breakingMarkets.length > 0) {
+        console.log(`Breaking: usando categoria ${cat} (${breakingMarkets.length} mercados)`);
+        break;
+      }
     }
+    fillTicker('ticker-breaking', breakingMarkets);
 
-    async function loadTickers() {
-      try {
-        const politics = await loadCategory('Politics');
-        fillTicker('ticker-breaking', politics);
-      } catch(e) { console.warn('Politics falhou:', e); }
-
-      try {
-        const crypto = await loadCategory('Crypto');
-        fillTicker('ticker-crypto', crypto);
-      } catch(e) { console.warn('Crypto falhou:', e); }
+    // Crypto: tenta Crypto e fallback
+    const cryptoCategories = ['Crypto', 'Cryptocurrency'];
+    let cryptoMarkets = [];
+    for (const cat of cryptoCategories) {
+      cryptoMarkets = await fetchMarkets(cat, 8);
+      if (cryptoMarkets.length > 0) {
+        console.log(`Crypto: usando categoria ${cat} (${cryptoMarkets.length} mercados)`);
+        break;
+      }
     }
+    fillTicker('ticker-crypto', cryptoMarkets);
+  }
 
-    document.addEventListener('DOMContentLoaded', loadTickers);
-    setInterval(loadTickers, 300000);
-  </script>
+  // Executa ao carregar e a cada 5 minutos
+  document.addEventListener('DOMContentLoaded', loadTickers);
+  setInterval(loadTickers, 300000);
+</script>
 </body>
 </html>
