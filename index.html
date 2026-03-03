@@ -68,7 +68,7 @@
       opacity: 0;
     }
 
-    /* TOP BAR (TICKER) */
+    /* TOP TICKER FIXO */
     .top-ticker {
       position: fixed;
       top: 0;
@@ -166,7 +166,7 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* HEADER FIXO (agora abaixo da top bar) */
+    /* HEADER FIXO (agora abaixo do ticker) */
     header {
       position: fixed;
       top: 40px; /* logo abaixo do ticker */
@@ -182,7 +182,7 @@
     nav {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 15px 20px; /* um pouco menor para não pesar */
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -478,12 +478,23 @@
 
   <!-- Script para carregar mercados ao vivo no ticker -->
   <script>
+    // Função para buscar mercados da Polymarket via API
     async function fetchMarketsByCategory(category, limit = 8) {
-      const url = `https://gamma-api.polymarket.com/markets?category=${encodeURIComponent(category)}&active=true&closed=false&limit=${limit}&order=volume`;
+      // Mapeamento de nomes amigáveis para categorias reais da API
+      const categoryMap = {
+        'Breaking News': 'Politics', // A categoria "Breaking News" no site corresponde a "Politics" na API
+        'Crypto': 'Crypto'           // "Crypto" parece funcionar, mas pode ser "Cryptocurrency" se falhar
+      };
+      
+      const apiCategory = categoryMap[category] || category;
+      const url = `https://gamma-api.polymarket.com/markets?category=${encodeURIComponent(apiCategory)}&active=true&closed=false&limit=${limit}&order=volume`;
+      
       try {
+        console.log('Buscando:', url); // Para depuração
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Erro na API');
+        if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
         const data = await response.json();
+        console.log('Dados recebidos:', data); // Para depuração
         return data;
       } catch (error) {
         console.error(`Erro ao buscar mercados de ${category}:`, error);
@@ -491,9 +502,14 @@
       }
     }
 
+    // Função para gerar HTML de um item do ticker
     function createTickerItem(market) {
+      // A API retorna um array de outcomes, cada um com "price"
+      // Vamos pegar o primeiro outcome (geralmente "Yes") e calcular a probabilidade
       const outcome = market.outcomes?.[0];
       const probability = outcome ? Math.round(outcome.price * 100) : 0;
+      
+      // Limitar título a ~35 caracteres para não poluir
       let title = market.question || 'Mercado';
       if (title.length > 35) title = title.substring(0, 35) + '…';
       
@@ -506,6 +522,7 @@
       `;
     }
 
+    // Função para preencher um ticker e clonar para o efeito infinito
     function fillTicker(elementId, markets) {
       const container = document.getElementById(elementId);
       if (!container) return;
@@ -515,18 +532,22 @@
         return;
       }
       
+      // Gerar HTML para todos os mercados
       let itemsHtml = '';
       markets.forEach(market => {
         itemsHtml += createTickerItem(market);
       });
       
+      // Para o efeito de rolagem contínua, duplicamos o conteúdo
       container.innerHTML = itemsHtml + itemsHtml;
       
-      const width = container.scrollWidth / 2;
-      const duration = Math.max(20, Math.min(60, width / 50));
+      // Ajustar duração da animação baseada na largura (opcional)
+      const width = container.scrollWidth / 2; // largura de uma cópia
+      const duration = Math.max(20, Math.min(60, width / 50)); // entre 20s e 60s
       container.style.animationDuration = `${duration}s`;
     }
 
+    // Função principal para carregar e exibir os mercados
     async function loadTickers() {
       const [breakingNews, crypto] = await Promise.all([
         fetchMarketsByCategory('Breaking News', 8),
@@ -537,7 +558,10 @@
       fillTicker('ticker-crypto', crypto);
     }
 
+    // Executar quando a página carregar
     document.addEventListener('DOMContentLoaded', loadTickers);
+
+    // Atualizar a cada 5 minutos
     setInterval(loadTickers, 300000);
   </script>
 </body>
