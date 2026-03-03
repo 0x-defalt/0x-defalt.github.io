@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+  <!-- === META E LINKS BÁSICOS === -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>0xDefalt | Alpha & Automation</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
 
-  <!-- Open Graph / Link Preview -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://0x-defalt.github.io/" />
-  <meta property="og:title"       content="0xDefalt — Alpha, Automação & Web3" />
+  <!-- === OPEN GRAPH E TWITTER CARD (pra compartilhar bonito) === -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://0x-defalt.github.io/" />
+  <meta property="og:title" content="0xDefalt — Alpha, Automação & Web3" />
   <meta property="og:description" content="Content Creator · Builder · Dev. Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket. Transformando Dados em Lucro Real." />
-  <meta property="og:image"       content="https://0x-defalt.github.io/profile.jpg" />
-  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image" content="https://0x-defalt.github.io/profile.jpg" />
+  <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:site"        content="@0xDefalt" />
-  <meta name="twitter:title"       content="0xDefalt — Alpha, Automação & Web3" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@0xDefalt" />
+  <meta name="twitter:title" content="0xDefalt — Alpha, Automação & Web3" />
   <meta name="twitter:description" content="Content Creator · Builder · Dev. Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket." />
-  <meta name="twitter:image"       content="https://0x-defalt.github.io/profile.jpg" />
+  <meta name="twitter:image" content="https://0x-defalt.github.io/profile.jpg" />
+
+  <!-- === FONTES DO GOOGLE === -->
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- === PARTICLES.JS (efeito de fundo) === -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  
+
+  <!-- === ESTILOS (CSS) === -->
   <style>
     :root {
       --neon: #00ff9d;
@@ -45,15 +50,13 @@
       overflow-x: hidden;
     }
 
-    /* PARTICULAS NO FUNDO */
+    /* === PARTICLES NO FUNDO === */
     #particles-js { 
-      position: fixed; 
-      top: 0; left: 0; width: 100%; height: 100%; 
-      z-index: -1;
-      opacity: 0.4;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      z-index: -1; opacity: 0.4;
     }
 
-    /* KEYFRAMES PARA ANIMACOES */
+    /* === ANIMAÇÕES GERAIS === */
     @keyframes fadeInSlide {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -70,52 +73,58 @@
       opacity: 0;
     }
 
-    /* HEADER FIXO */
+    /* === HEADER FIXO === */
     header {
       position: fixed; top: 0; width: 100%; z-index: 100;
       background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(10px);
       border-bottom: 1px solid #222;
-      animation: fadeInSlide 0.5s ease-out;
     }
+
     nav {
       max-width: 1100px; margin: 0 auto; padding: 10px 20px 20px;
       display: flex; justify-content: space-between; align-items: center;
     }
+
     .logo { 
-        font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; 
-        text-transform: uppercase; font-family: var(--font-header);
-        color: var(--text); text-decoration: none;
-        transition: 0.3s;
+      font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; 
+      text-transform: uppercase; font-family: var(--font-header);
+      color: var(--text); text-decoration: none;
+      transition: 0.3s;
     }
     .logo:hover { color: var(--neon); text-shadow: 0 0 15px var(--neon); }
+
     .nav-links a { 
-        color: var(--dim-text); text-decoration: none; 
-        margin-left: 25px; font-size: 0.9rem; 
-        transition: 0.3s; font-family: var(--font-header);
-        font-weight: 500;
+      color: var(--dim-text); text-decoration: none; 
+      margin-left: 25px; font-size: 0.9rem; 
+      transition: 0.3s; font-family: var(--font-header);
+      font-weight: 500;
     }
     .nav-links a:hover { color: var(--neon); }
 
-    /* Slider de topo */
+    /* === TICKER/SLIDER DE TOPO (aqui você muda background, cores, etc) === */
     .ticker-bar {
       max-width: 1100px; margin: 0 auto; padding: 10px 20px 0;
       overflow: hidden;
-      background: var(--card-bg);
+      background: #000000; /* FUNDO PRETO PURO (mude aqui se quiser #050505 ou outra cor) */
       border-bottom: 1px solid #222;
       white-space: nowrap;
     }
+
     .ticker-content {
       display: inline-flex;
-      animation: scroll-left 80s linear infinite; /* Mais lento pra ler */
+      animation: scroll-left 80s linear infinite; /* Velocidade do scroll - mude o 80s pra mais rápido/lento */
       padding-left: 100%;
     }
+
     .ticker-bar:hover .ticker-content {
-      animation-play-state: paused;
+      animation-play-state: paused; /* Pausa no hover */
     }
+
     @keyframes scroll-left {
       0% { transform: translateX(0); }
       100% { transform: translateX(-100%); }
     }
+
     .ticker-item {
       display: inline-flex; align-items: center; gap: 6px;
       margin-right: 30px;
@@ -123,22 +132,26 @@
       color: var(--dim-text);
       transition: all 0.3s ease;
       padding: 6px 12px; border-radius: 6px;
-      background: rgba(0, 255, 157, 0.05);
+      background: rgba(0, 255, 157, 0.03); /* Fundo sutil neon no preto */
     }
+
     .ticker-item:hover {
-      background: rgba(0, 255, 157, 0.15);
+      background: rgba(0, 255, 157, 0.12);
       box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
       transform: scale(1.05);
     }
+
     .ticker-chance {
       font-weight: bold;
     }
+
     .low-chance { color: var(--red-chance); }
     .high-chance { color: var(--green-chance); }
 
+    /* === CONTAINER PRINCIPAL === */
     .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
 
-    /* SEÇÃO HERO */
+    /* === HERO SECTION === */
     .hero { padding: 220px 0 80px; display: flex; align-items: center; gap: 50px; }
 
     .hero-content { flex: 1; }
@@ -151,15 +164,18 @@
     .hero-content p { font-size: 1.2rem; color: var(--dim-text); margin-bottom: 30px; }
 
     .profile-wrapper { 
-        position: relative; width: 300px; height: 300px; flex-shrink: 0; 
-        transition: transform 0.1s ease-out;
+      position: relative; width: 300px; height: 300px; flex-shrink: 0; 
+      transition: transform 0.1s ease-out;
     }
     .profile-img { 
       width: 100%; height: 100%; object-fit: cover; 
       border-radius: 20px; border: 1px solid #333;
       transition: 0.5s;
     }
-    .profile-wrapper:hover .profile-img { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 255, 157, 0.3); animation: glitch 0.6s infinite; }
+    .profile-wrapper:hover .profile-img { 
+      border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 255, 157, 0.3); 
+      animation: glitch 0.6s infinite; 
+    }
 
     @keyframes glitch {
       0%   { transform: translate(0); filter: none; clip-path: none; }
@@ -174,16 +190,20 @@
       90%  { transform: translate(0); filter: none; clip-path: none; }
       100% { transform: translate(0); filter: none; }
     }
+
     .profile-wrapper::after {
       content: ""; position: absolute; top: 15px; left: 15px; width: 100%; height: 100%;
       border: 2px solid var(--neon); border-radius: 20px; z-index: -1; opacity: 0.3;
     }
 
+    /* === TÍTULOS DE SEÇÕES === */
     .section-title { 
-        font-size: 0.8rem; text-transform: uppercase; color: var(--neon); 
-        letter-spacing: 3px; margin-bottom: 40px; display: block; 
-        font-family: var(--font-header); font-weight: 700;
+      font-size: 0.8rem; text-transform: uppercase; color: var(--neon); 
+      letter-spacing: 3px; margin-bottom: 40px; display: block; 
+      font-family: var(--font-header); font-weight: 700;
     }
+
+    /* === GRID DE CARDS === */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 100px; }
     .card { 
       background: var(--card-bg); border: 1px solid #222; padding: 30px; 
@@ -193,6 +213,7 @@
     .card h3 { margin: 0 0 10px; font-size: 1.3rem; font-family: var(--font-header); font-weight: 700; }
     .card p { color: var(--dim-text); margin: 0; font-size: 0.95rem; }
 
+    /* === BOTÃO PRINCIPAL === */
     .btn-main {
       display: inline-block; background: var(--neon); color: #000; padding: 15px 35px;
       border-radius: 8px; text-decoration: none; font-weight: 700; transition: 0.3s;
@@ -200,7 +221,7 @@
     }
     .btn-main:hover { box-shadow: 0 0 30px rgba(0, 255, 157, 0.5); transform: scale(1.05); }
 
-    /* FOOTER */
+    /* === FOOTER === */
     footer { 
       padding: 50px 0; border-top: 1px solid #222; 
       color: #444; font-size: 0.8rem; text-align: center; 
@@ -223,6 +244,7 @@
     }
     .footer-twitter svg { width: 15px; height: 15px; fill: var(--neon); }
 
+    /* === RESPONSIVO (mobile) === */
     @media (max-width: 850px) {
       .hero { flex-direction: column-reverse; text-align: center; padding-top: 220px; }
       .hero-content h1 { font-size: 2.2rem; }
@@ -234,14 +256,19 @@
 </head>
 <body>
 
+  <!-- === EFEITO DE PARTÍCULAS NO FUNDO === -->
   <div id="particles-js"></div>
 
+  <!-- === HEADER COM TICKER + NAV === -->
   <header>
+    <!-- TICKER (slider de mercados) - aqui muda background, velocidade, etc -->
     <div class="ticker-bar">
       <div class="ticker-content" id="ticker-content">
         <span class="ticker-item">Carregando mercados reais do Polymarket...</span>
       </div>
     </div>
+
+    <!-- NAVEGAÇÃO -->
     <nav>
       <a href="#" class="logo">0xDefalt</a>
       <div class="nav-links">
@@ -252,9 +279,89 @@
     </nav>
   </header>
 
-  <!-- resto do main, hero, sections, footer igual ao anterior -->
+  <!-- === CONTEÚDO PRINCIPAL === -->
+  <main class="container">
+    
+    <!-- === HERO (parte de cima com foto e texto) === -->
+    <section class="hero" id="about">
+      <div class="hero-content animate-entry" style="animation-delay: 0.2s;">
+        <span class="section-title">Content Creator · Builder · Dev</span>
+        <h1>O Alpha que Você Procura, sem Ruído.</h1>
+        <p>Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket. Transformando Dados em Lucro Real.</p>
+        <a href="https://t.me/SEU_CANAL" class="btn-main">Entrar no Telegram Alpha</a>
+      </div>
+      
+      <div class="profile-wrapper animate-entry" style="animation-delay: 0.4s;">
+        <img src="profile.jpg" alt="0xDefalt" class="profile-img">
+      </div>
+    </section>
 
+    <!-- === ECOSSISTEMA (cards) === -->
+    <section id="alpha" class="animate-entry" style="animation-delay: 0.6s;">
+      <span class="section-title">O Ecossistema</span>
+      <div class="grid">
+        <a href="#" class="card">
+          <h3>Polymarket Tools</h3>
+          <p>Automações exclusivas para monitorar odds e prever movimentações de baleias antes do mercado reagir.</p>
+        </a>
+        <a href="#" class="card">
+          <h3>X (Twitter) Bots</h3>
+          <p>Scripts de monitoramento de menções e análise de sentimentos em tempo real para moedas de baixa liquidez.</p>
+        </a>
+        <a href="#" class="card">
+          <h3>Consultoria Web3</h3>
+          <p>Análise de segurança de contratos e identificação de padrões de pump and dump.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- === LINKS DIRETOS === -->
+    <section id="links" class="animate-entry" style="animation-delay: 0.8s; margin-bottom: 100px;">
+      <span class="section-title">Direct Links</span>
+      <div class="grid">
+        <a href="https://polymarket.com/?via=REF" class="card">
+          <h3>Polymarket Ref</h3>
+          <p>Ganhe bônus ao operar pelo link oficial da comunidade.</p>
+        </a>
+        <a href="#" class="card">
+          <h3>Automação</h3>
+          <p>Acesse os scripts e ferramentas de automação para monitoramento de mercado, alertas on-chain e execução de estratégias sem intervenção manual.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- === PRODUTIVIDADE === -->
+    <section id="produtividade" class="animate-entry" style="animation-delay: 1s; margin-bottom: 100px;">
+      <span class="section-title">Produtividade</span>
+      <div class="grid">
+        <div class="card">
+          <h3>Sistemas & Fluxos</h3>
+          <p>Frameworks pessoais para operar com consistência: gestão de risco automatizada, rotinas de revisão de portfólio e dashboards que eliminam o ruído e mantêm o foco no que gera retorno.</p>
+        </div>
+        <div class="card">
+          <h3>Menos Ruído, Mais Sinal</h3>
+          <p>Métodos e ferramentas para filtrar informação, automatizar tarefas repetitivas e liberar tempo para o que realmente importa — identificar oportunidades antes da maioria.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- === FOOTER === -->
+  <footer>
+    <div>
+      <a href="https://twitter.com/0xDefalt" target="_blank" class="footer-twitter">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+        @0xDefalt
+      </a>
+    </div>
+  </footer>
+
+  <!-- === JAVASCRIPT (particles, parallax e ticker dinâmico) === -->
   <script>
+    // Particles.js (efeito de fundo)
     particlesJS("particles-js", {
       "particles": {
         "number": { "value": 70 },
@@ -276,17 +383,17 @@
       }
     });
 
-    // Parallax na foto
+    // Parallax na foto do hero
     window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const profile = document.querySelector('.profile-wrapper');
-        const limit = 300; 
-        if (scrolled < limit) {
-            profile.style.transform = `translateY(${scrolled * 0.2}px)`;
-        }
+      const scrolled = window.pageYOffset;
+      const profile = document.querySelector('.profile-wrapper');
+      const limit = 300; 
+      if (scrolled < limit) {
+        profile.style.transform = `translateY(${scrolled * 0.2}px)`;
+      }
     });
 
-    // Fetch dinâmico da Gamma API do Polymarket
+    // === TICKER DINÂMICO (aqui puxa dados reais da API) ===
     async function fetchPolymarketMarkets() {
       try {
         // Breaking News
@@ -297,38 +404,37 @@
         const cryptoRes = await fetch('https://gamma-api.polymarket.com/markets?tags=crypto&active=true&limit=15&order_by=volume&ascending=false');
         const cryptoData = await cryptoRes.json();
 
-        // Mapear pra formato simples
         const allMarkets = [
           ...breakingData.map(m => ({
             icon: '🔥',
-            title: m.question || m.title || m.slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            title: m.question || m.title || m.slug?.replace(/-/g, ' ')?.replace(/\b\w/g, l => l.toUpperCase()) || 'Breaking News',
             chance: Math.round((m.outcomes?.find(o => o.channel === 'yes')?.price || 0.5) * 100)
           })),
           ...cryptoData.map(m => ({
             icon: '💰',
-            title: m.question || m.title || m.slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            title: m.question || m.title || m.slug?.replace(/-/g, ' ')?.replace(/\b\w/g, l => l.toUpperCase()) || 'Crypto Market',
             chance: Math.round((m.outcomes?.find(o => o.channel === 'yes')?.price || 0.5) * 100)
           }))
-        ].filter(m => m.title && m.title.trim() !== ''); // Limpa vazios
+        ].filter(m => m.title && m.title.trim() !== '');
 
-        // Ordena por chance descendente (pra destacar os mais "quentes")
         allMarkets.sort((a, b) => b.chance - a.chance);
 
-        return allMarkets.slice(0, 40); // Limita pra não ficar eterno
+        return allMarkets.slice(0, 40);
       } catch (err) {
-        console.error('Erro na API Polymarket:', err);
+        console.error('Erro na API:', err);
+        // Fallback pra teste local/offline
         return [
-          { icon: '🔥', title: 'Erro ao carregar Breaking News', chance: 0 },
-          { icon: '💰', title: 'Erro ao carregar Crypto', chance: 0 }
+          { icon: '🔥', title: 'Teste local: Breaking News (suba pro GitHub pra ver real)', chance: 42 },
+          { icon: '💰', title: 'Teste local: BTC > $100k?', chance: 69 },
+          { icon: '🔥', title: 'Carregamento real só online', chance: 100 }
         ];
       }
     }
 
-    // Carrega e preenche o slider
     async function loadTicker() {
       const markets = await fetchPolymarketMarkets();
       const tickerContent = document.getElementById('ticker-content');
-      tickerContent.innerHTML = ''; // Limpa loading
+      tickerContent.innerHTML = '';
 
       markets.forEach(market => {
         const item = document.createElement('span');
@@ -338,11 +444,10 @@
         tickerContent.appendChild(item);
       });
 
-      // Duplica pra loop infinito
-      tickerContent.innerHTML += tickerContent.innerHTML;
+      tickerContent.innerHTML += tickerContent.innerHTML; // Duplica pra loop infinito
     }
 
-    // Executa ao carregar a página
+    // Carrega o ticker ao abrir a página
     loadTicker();
   </script>
 
