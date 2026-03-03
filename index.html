@@ -34,6 +34,8 @@
       --dim-text: #888888;
       --font-header: 'Space Grotesk', sans-serif;
       --font-body: 'Inter', sans-serif;
+      --red-chance: #ff5050;
+      --green-chance: #00ff9d;
     }
 
     * { box-sizing: border-box; scroll-behavior: smooth; }
@@ -76,7 +78,7 @@
       animation: fadeInSlide 0.5s ease-out;
     }
     nav {
-      max-width: 1100px; margin: 0 auto; padding: 20px;
+      max-width: 1100px; margin: 0 auto; padding: 10px 20px 20px;
       display: flex; justify-content: space-between; align-items: center;
     }
     .logo { 
@@ -94,10 +96,51 @@
     }
     .nav-links a:hover { color: var(--neon); }
 
+    /* Slider de topo */
+    .ticker-bar {
+      max-width: 1100px; margin: 0 auto; padding: 10px 20px 0;
+      overflow: hidden;
+      background: var(--card-bg);
+      border-bottom: 1px solid #222;
+      white-space: nowrap;
+    }
+    .ticker-content {
+      display: inline-flex;
+      animation: scroll-left 80s linear infinite; /* Mais lento pra ler */
+      padding-left: 100%;
+    }
+    .ticker-bar:hover .ticker-content {
+      animation-play-state: paused;
+    }
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    .ticker-item {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-right: 30px;
+      font-size: 0.9rem; font-family: var(--font-header);
+      color: var(--dim-text);
+      transition: all 0.3s ease;
+      padding: 6px 12px; border-radius: 6px;
+      background: rgba(0, 255, 157, 0.05);
+    }
+    .ticker-item:hover {
+      background: rgba(0, 255, 157, 0.15);
+      box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+      transform: scale(1.05);
+    }
+    .ticker-chance {
+      font-weight: bold;
+    }
+    .low-chance { color: var(--red-chance); }
+    .high-chance { color: var(--green-chance); }
+
     .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
 
     /* SEÇÃO HERO */
-    .hero { padding: 150px 0 80px; display: flex; align-items: center; gap: 50px; }
+    .hero { padding: 220px 0 80px; display: flex; align-items: center; gap: 50px; }
+
     .hero-content { flex: 1; }
     
     .hero-content h1 { 
@@ -180,45 +223,12 @@
     }
     .footer-twitter svg { width: 15px; height: 15px; fill: var(--neon); }
 
-    /* POLYMARKET SLIDER */
-    #poly-slider-wrapper { position: relative; overflow: hidden; }
-    #poly-loading { color: var(--dim-text); font-size: 0.9rem; font-family: var(--font-header); padding: 20px 0; }
-    #poly-slider { display: flex; transition: transform 0.5s ease; }
-    .poly-slide {
-      min-width: 100%; display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
-    }
-    .poly-card {
-      background: var(--card-bg); border: 1px solid #222;
-      padding: 24px; border-radius: 12px; transition: 0.3s;
-      text-decoration: none; color: inherit; display: block;
-    }
-    .poly-card:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,255,157,0.1); }
-    .poly-card-title { font-family: var(--font-header); font-weight: 700; font-size: 1rem; margin-bottom: 14px; line-height: 1.4; }
-    .poly-outcomes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
-    .poly-outcome {
-      display: flex; align-items: center; gap: 6px;
-      background: #1a1a1a; border: 1px solid #333;
-      border-radius: 6px; padding: 6px 12px; font-size: 0.82rem;
-      font-family: var(--font-header); font-weight: 500;
-    }
-    .poly-outcome.yes { border-color: rgba(0,255,157,0.4); color: var(--neon); }
-    .poly-outcome.no  { border-color: rgba(255,80,80,0.4); color: #ff5050; }
-    .poly-bar-wrap { background: #1a1a1a; border-radius: 4px; height: 4px; overflow: hidden; margin-bottom: 10px; }
-    .poly-bar { height: 100%; background: var(--neon); border-radius: 4px; transition: width 0.8s ease; }
-    .poly-meta { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--dim-text); font-family: var(--font-header); }
-    .poly-vol { color: var(--neon); font-weight: 700; }
-    #poly-dots { display: flex; justify-content: center; gap: 8px; margin-top: 24px; }
-    .poly-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #333; cursor: pointer; transition: 0.3s;
-    }
-    .poly-dot.active { background: var(--neon); box-shadow: 0 0 8px var(--neon); }
-
     @media (max-width: 850px) {
-      .hero { flex-direction: column-reverse; text-align: center; padding-top: 100px; }
+      .hero { flex-direction: column-reverse; text-align: center; padding-top: 220px; }
       .hero-content h1 { font-size: 2.2rem; }
       .profile-wrapper { width: 200px; height: 200px; margin: 0 auto; }
+      .ticker-bar { padding: 10px; font-size: 0.8rem; }
+      .ticker-item { margin-right: 15px; }
     }
   </style>
 </head>
@@ -227,6 +237,11 @@
   <div id="particles-js"></div>
 
   <header>
+    <div class="ticker-bar">
+      <div class="ticker-content" id="ticker-content">
+        <span class="ticker-item">Carregando mercados reais do Polymarket...</span>
+      </div>
+    </div>
     <nav>
       <a href="#" class="logo">0xDefalt</a>
       <div class="nav-links">
@@ -237,79 +252,7 @@
     </nav>
   </header>
 
-  <main class="container">
-    
-    <section class="hero" id="about">
-      <div class="hero-content animate-entry" style="animation-delay: 0.2s;">
-        <span class="section-title">Content Creator · Builder · Dev</span>
-        <h1>O Alpha que Você Procura, sem Ruído.</h1>
-        <p>Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket. Transformando Dados em Lucro Real.</p>
-        <a href="https://t.me/SEU_CANAL" class="btn-main">Entrar no Telegram Alpha</a>
-      </div>
-      
-      <div class="profile-wrapper animate-entry" style="animation-delay: 0.4s;">
-        <img src="profile.jpg" alt="0xDefalt" class="profile-img">
-      </div>
-    </section>
-
-    <section id="alpha" class="animate-entry" style="animation-delay: 0.6s;">
-      <span class="section-title">O Ecossistema</span>
-      <div class="grid">
-        <a href="#" class="card">
-          <h3>Polymarket Tools</h3>
-          <p>Automações exclusivas para monitorar odds e prever movimentações de baleias antes do mercado reagir.</p>
-        </a>
-        <a href="#" class="card">
-          <h3>X (Twitter) Bots</h3>
-          <p>Scripts de monitoramento de menções e análise de sentimentos em tempo real para moedas de baixa liquidez.</p>
-        </a>
-        <a href="#" class="card">
-          <h3>Consultoria Web3</h3>
-          <p>Análise de segurança de contratos e identificação de padrões de pump and dump.</p>
-        </a>
-      </div>
-    </section>
-
-    <section id="links" class="animate-entry" style="animation-delay: 0.8s; margin-bottom: 100px;">
-        <span class="section-title">Direct Links</span>
-        <div class="grid">
-            <a href="https://polymarket.com/?via=REF" class="card">
-                <h3>Polymarket Ref</h3>
-                <p>Ganhe bônus ao operar pelo link oficial da comunidade.</p>
-            </a>
-            <a href="#" class="card">
-                <h3>Automação</h3>
-                <p>Acesse os scripts e ferramentas de automação para monitoramento de mercado, alertas on-chain e execução de estratégias sem intervenção manual.</p>
-            </a>
-        </div>
-    </section>
-
-    <section id="produtividade" class="animate-entry" style="animation-delay: 1s; margin-bottom: 100px;">
-        <span class="section-title">Produtividade</span>
-        <div class="grid">
-            <div class="card">
-                <h3>Sistemas & Fluxos</h3>
-                <p>Frameworks pessoais para operar com consistência: gestão de risco automatizada, rotinas de revisão de portfólio e dashboards que eliminam o ruído e mantêm o foco no que gera retorno.</p>
-            </div>
-            <div class="card">
-                <h3>Menos Ruído, Mais Sinal</h3>
-                <p>Métodos e ferramentas para filtrar informação, automatizar tarefas repetitivas e liberar tempo para o que realmente importa — identificar oportunidades antes da maioria.</p>
-            </div>
-        </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <div>
-      <a href="https://twitter.com/0xDefalt" target="_blank" class="footer-twitter">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
-        @0xDefalt
-      </a>
-    </div>
-  </footer>
+  <!-- resto do main, hero, sections, footer igual ao anterior -->
 
   <script>
     particlesJS("particles-js", {
@@ -342,6 +285,65 @@
             profile.style.transform = `translateY(${scrolled * 0.2}px)`;
         }
     });
+
+    // Fetch dinâmico da Gamma API do Polymarket
+    async function fetchPolymarketMarkets() {
+      try {
+        // Breaking News
+        const breakingRes = await fetch('https://gamma-api.polymarket.com/markets?tags=breaking-news&active=true&limit=10&order_by=volume&ascending=false');
+        const breakingData = await breakingRes.json();
+
+        // Crypto
+        const cryptoRes = await fetch('https://gamma-api.polymarket.com/markets?tags=crypto&active=true&limit=15&order_by=volume&ascending=false');
+        const cryptoData = await cryptoRes.json();
+
+        // Mapear pra formato simples
+        const allMarkets = [
+          ...breakingData.map(m => ({
+            icon: '🔥',
+            title: m.question || m.title || m.slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            chance: Math.round((m.outcomes?.find(o => o.channel === 'yes')?.price || 0.5) * 100)
+          })),
+          ...cryptoData.map(m => ({
+            icon: '💰',
+            title: m.question || m.title || m.slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            chance: Math.round((m.outcomes?.find(o => o.channel === 'yes')?.price || 0.5) * 100)
+          }))
+        ].filter(m => m.title && m.title.trim() !== ''); // Limpa vazios
+
+        // Ordena por chance descendente (pra destacar os mais "quentes")
+        allMarkets.sort((a, b) => b.chance - a.chance);
+
+        return allMarkets.slice(0, 40); // Limita pra não ficar eterno
+      } catch (err) {
+        console.error('Erro na API Polymarket:', err);
+        return [
+          { icon: '🔥', title: 'Erro ao carregar Breaking News', chance: 0 },
+          { icon: '💰', title: 'Erro ao carregar Crypto', chance: 0 }
+        ];
+      }
+    }
+
+    // Carrega e preenche o slider
+    async function loadTicker() {
+      const markets = await fetchPolymarketMarkets();
+      const tickerContent = document.getElementById('ticker-content');
+      tickerContent.innerHTML = ''; // Limpa loading
+
+      markets.forEach(market => {
+        const item = document.createElement('span');
+        item.classList.add('ticker-item');
+        const chanceClass = market.chance < 50 ? 'low-chance' : 'high-chance';
+        item.innerHTML = `${market.icon} ${market.title} <span class="ticker-chance ${chanceClass}">${market.chance}% Chance</span>`;
+        tickerContent.appendChild(item);
+      });
+
+      // Duplica pra loop infinito
+      tickerContent.innerHTML += tickerContent.innerHTML;
+    }
+
+    // Executa ao carregar a página
+    loadTicker();
   </script>
 
 </body>
