@@ -161,88 +161,45 @@
   </script>
 
   <script>
-    // CONFIGURAÇÕES
     const WORKER_URL = 'https://polymarket-proxy2.0xdefalt.workers.dev';
-    const MOCK_BREAKING = [
-      { question: "Trump to announce VP this week?", outcomes: [{ price: 0.65 }], endDate: "2026-12-31" },
-      { question: "US government shutdown in 2024?", outcomes: [{ price: 0.42 }], endDate: "2026-12-31" },
-      { question: "Fed cuts rates in June?", outcomes: [{ price: 0.78 }], endDate: "2026-12-31" },
-      { question: "Israel strike on Yemen by June?", outcomes: [{ price: 0.55 }], endDate: "2026-12-31" },
-      { question: "Bitcoin ETF approval this year?", outcomes: [{ price: 0.83 }], endDate: "2026-12-31" }
-    ];
-    const MOCK_CRYPTO = [
-      { question: "ETH above $5k in July?", outcomes: [{ price: 0.32 }], endDate: "2026-12-31" },
-      { question: "BTC hits $100k in 2024?", outcomes: [{ price: 0.55 }], endDate: "2026-12-31" },
-      { question: "Solana flips BNB?", outcomes: [{ price: 0.23 }], endDate: "2026-12-31" },
-      { question: "XRP etf approved?", outcomes: [{ price: 0.41 }], endDate: "2026-12-31" },
-      { question: "ADA above $1?", outcomes: [{ price: 0.67 }], endDate: "2026-12-31" }
-    ];
 
-    async function fetchWithFallback(categories, mockData, limit = 8) {
-      for (const cat of categories) {
-        try {
-          const url = `${WORKER_URL}/markets?category=${encodeURIComponent(cat)}&active=true&closed=false&limit=${limit}&order=volume`;
-          console.log(`Tentando ${cat}... URL:`, url);
-          const res = await fetch(url);
-          if (!res.ok) {
-            console.warn(`Categoria ${cat} falhou com status ${res.status}`);
-            continue;
-          }
-          let data = await res.json();
-          if (!data || !Array.isArray(data)) {
-            console.warn(`Categoria ${cat} retornou dados inválidos`, data);
-            continue;
-          }
-          const agora = new Date();
-          const mercadosValidos = data.filter(m => {
-            if (m.closed === true) return false;
-            if (m.endDate) {
-              const end = new Date(m.endDate);
-              return end > agora;
-            }
-            return true;
-          });
-          if (mercadosValidos.length > 0) {
-            console.log(`Categoria ${cat} retornou ${mercadosValidos.length} mercados válidos`);
-            return mercadosValidos;
-          } else {
-            console.log(`Categoria ${cat} retornou ${data.length} mercados, mas todos estão encerrados/antigos`);
-          }
-        } catch (e) {
-          console.warn(`Erro ao buscar categoria ${cat}:`, e);
-        }
-      }
-      console.warn('Usando dados mockados');
-      return mockData;
-    }
-
-    function createTickerItem(market) {
-      const prob = market.outcomes?.[0]?.price ? Math.round(market.outcomes[0].price * 100) : 50;
-      let title = market.question || 'Mercado';
-      if (title.length > 35) title = title.slice(0,35) + '…';
-      return `<div class="ticker-item"><span>${title}</span><span class="prob">${prob}%</span></div><span class="separator">•</span>`;
+    async function loadCategory(category) {
+      const url = category ? WORKER_URL + '?category=' + encodeURIComponent(category) : WORKER_URL;
+      const res = await fetch(url);
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
     }
 
     function fillTicker(id, markets) {
       const el = document.getElementById(id);
-      if (!el) return;
-      if (!markets || markets.length === 0) {
-        el.innerHTML = `<div class="ticker-item">Sem dados</div>`;
-        return;
-      }
-      let html = '';
-      markets.forEach(m => html += createTickerItem(m));
-      el.innerHTML = html + html;
-      const width = el.scrollWidth / 2;
-      const duration = Math.max(20, Math.min(60, width / 50));
+      if (!el || !markets.length) return;
+      let items = '';
+      markets.slice(0, 12).forEach(function(m) {
+        const mk = m.markets && m.markets[0] ? m.markets[0] : {};
+        const raw = mk.outcomePrices || ['0.5'];
+        const prices = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        const prob = Math.round(parseFloat(prices[0]) * 100);
+        let title = m.title || m.question || 'Mercado';
+        if (title.length > 40) title = title.slice(0, 40) + '...';
+        const slug = m.slug || '';
+        const href = slug ? 'https://polymarket.com/event/' + slug : 'https://polymarket.com';
+        items += '<div class="ticker-item" style="cursor:pointer;" onclick="window.open(\'' + href + '\',\'_blank\')"><span>' + title + '</span><span class="prob">' + prob + '%</span></div><span class="separator">•</span>';
+      });
+      el.innerHTML = items + items;
+      const duration = Math.max(20, Math.min(80, el.scrollWidth / 2 / 50));
       el.style.animationDuration = duration + 's';
     }
 
     async function loadTickers() {
-      const breaking = await fetchWithFallback(['Breaking News', 'Politics', 'Technology'], MOCK_BREAKING, 8);
-      const crypto = await fetchWithFallback(['Crypto'], MOCK_CRYPTO, 8);
-      fillTicker('ticker-breaking', breaking);
-      fillTicker('ticker-crypto', crypto);
+      try {
+        const politics = await loadCategory('Politics');
+        fillTicker('ticker-breaking', politics);
+      } catch(e) { console.warn('Politics falhou:', e); }
+
+      try {
+        const crypto = await loadCategory('Crypto');
+        fillTicker('ticker-crypto', crypto);
+      } catch(e) { console.warn('Crypto falhou:', e); }
     }
 
     document.addEventListener('DOMContentLoaded', loadTickers);
