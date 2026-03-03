@@ -476,30 +476,42 @@
     });
   </script>
 
-  <!-- Script para carregar mercados ao vivo no ticker -->
+  <!-- Script para carregar mercados ao vivo no ticker via Cloudflare Worker -->
   <script>
-    // Função para buscar mercados da Polymarket via API
+    // URL base do worker (substitua se necessário)
+    const WORKER_URL = 'https://polymarket-proxy2.0xdefalt.workers.dev';
+
+    // Função para buscar mercados da Polymarket via worker
     async function fetchMarketsByCategory(category, limit = 8) {
-      // Mapeamento de nomes amigáveis para categorias reais da API
-      const categoryMap = {
-        'Breaking News': 'Politics', // A categoria "Breaking News" no site corresponde a "Politics" na API
-        'Crypto': 'Crypto'           // "Crypto" parece funcionar, mas pode ser "Cryptocurrency" se falhar
-      };
+      // Mapeamento de categorias amigáveis para as usadas na API
+      // Para "Breaking News", tentamos primeiro "Breaking News", depois "Politics" como fallback
+      const categoriesToTry = category === 'Breaking News' 
+        ? ['Breaking News', 'Politics'] 
+        : [category];
       
-      const apiCategory = categoryMap[category] || category;
-      const url = `https://gamma-api.polymarket.com/markets?category=${encodeURIComponent(apiCategory)}&active=true&closed=false&limit=${limit}&order=volume`;
-      
-      try {
-        console.log('Buscando:', url); // Para depuração
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
-        const data = await response.json();
-        console.log('Dados recebidos:', data); // Para depuração
-        return data;
-      } catch (error) {
-        console.error(`Erro ao buscar mercados de ${category}:`, error);
-        return [];
+      for (const cat of categoriesToTry) {
+        const url = `${WORKER_URL}/markets?category=${encodeURIComponent(cat)}&active=true&closed=false&limit=${limit}&order=volume`;
+        
+        try {
+          console.log(`Tentando categoria: ${cat} para ${category} via worker`);
+          const response = await fetch(url);
+          if (!response.ok) {
+            console.warn(`Resposta não OK para ${cat}: ${response.status}`);
+            continue;
+          }
+          const data = await response.json();
+          if (data && data.length > 0) {
+            console.log(`Categoria ${cat} retornou ${data.length} mercados`);
+            return data;
+          }
+        } catch (error) {
+          console.warn(`Erro ao buscar categoria ${cat}:`, error);
+        }
       }
+      
+      // Se todas as tentativas falharem, retorna array vazio
+      console.log(`Nenhum mercado encontrado para ${category}`);
+      return [];
     }
 
     // Função para gerar HTML de um item do ticker
