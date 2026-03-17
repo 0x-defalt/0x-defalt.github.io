@@ -29,13 +29,20 @@
     @keyframes pulseGlow { 0% { text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); } 50% { text-shadow: 0 0 25px rgba(0, 255, 157, 0.8), 0 0 40px rgba(0, 255, 157, 0.3); } 100% { text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); } }
     @keyframes fadeInTicker { 0% { opacity: 0; } 100% { opacity: 1; } }
     .animate-entry { animation: fadeInSlide 0.8s ease-out forwards; opacity: 0; }
+
+    /* TOP TICKER — só Breaking */
     .top-ticker { position: fixed; top: 0; left: 0; width: 100%; height: 35px; background: #1a1f2e; border-bottom: 1px solid #2a3040; z-index: 200; font-family: var(--font-header); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 20px; opacity: 0; animation: fadeInTicker 3s ease-in forwards; }
     .ticker-row { max-width: 1100px; width: 100%; display: flex; align-items: center; gap: 15px; }
     .ticker-group { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; }
     .ticker-label { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: var(--neon); letter-spacing: 0.5px; white-space: nowrap; display: flex; align-items: center; gap: 4px; line-height: 1; }
     .ticker-label span { font-size: 0.9rem; }
     .ticker-group iframe { flex: 1; height: 35px; border: none; overflow: hidden; border-radius: 4px; min-width: 100px; }
-    .ticker-separator { color: #555; font-size: 1.2rem; font-weight: 300; margin: 0 5px; line-height: 1; }
+
+    /* CRYPTO TICKER — faixa inline acima do Ecossistema */
+    .crypto-ticker-bar { width: 100%; background: #0d1117; border: 1px solid #1e2633; border-radius: 10px; display: flex; align-items: center; gap: 12px; padding: 0 16px; height: 42px; margin-bottom: 28px; }
+    .crypto-ticker-bar .ticker-label { font-size: 0.7rem; }
+    .crypto-ticker-bar iframe { flex: 1; height: 42px; border: none; overflow: hidden; border-radius: 4px; min-width: 100px; }
+
     header { position: fixed; top: 35px; left: 0; width: 100%; z-index: 150; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid #222; animation: fadeInSlide 0.5s ease-out; }
     nav { max-width: 1100px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
     .logo { font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; text-transform: uppercase; font-family: var(--font-header); color: var(--text); text-decoration: none; transition: 0.3s; }
@@ -65,12 +72,11 @@
     .footer-twitter:hover { background: rgba(0, 255, 157, 0.08); border-color: var(--neon); box-shadow: 0 0 15px rgba(0, 255, 157, 0.2); }
     .footer-twitter svg { width: 15px; height: 15px; fill: var(--neon); }
     @media (max-width: 700px) { 
-      .top-ticker { height: auto; min-height: 70px; padding: 5px 20px; }
-      .ticker-row { flex-direction: column; gap: 5px; }
-      .ticker-group { width: 100%; }
-      .ticker-separator { display: none; }
-      header { top: 70px; } 
-      .container { padding-top: 150px; } 
+      .top-ticker { height: 35px; }
+      header { top: 35px; } 
+      .container { padding-top: 120px; }
+      .crypto-ticker-bar { height: auto; min-height: 50px; padding: 6px 12px; }
+      .crypto-ticker-bar iframe { height: 35px; }
     }
     @media (max-width: 850px) { 
       .hero { flex-direction: column-reverse; text-align: center; padding-top: 50px; } 
@@ -82,22 +88,12 @@
 <body>
   <div id="particles-js"></div>
 
-  <!-- TOP TICKER COM FADE DE 3 SEGUNDOS -->
+  <!-- TOP TICKER — só Breaking News -->
   <div class="top-ticker">
     <div class="ticker-row">
-      <!-- Grupo Breaking -->
       <div class="ticker-group">
         <div class="ticker-label"><span>📰</span> BREAKING</div>
         <iframe src="https://ticker.polymarket.com/embed?category=Breaking%20News&theme=dark&speed=1&displayMode=percentage&height=35" title="Breaking News Ticker"></iframe>
-      </div>
-      
-      <!-- Separador -->
-      <div class="ticker-separator">|</div>
-      
-      <!-- Grupo Crypto -->
-      <div class="ticker-group">
-        <div class="ticker-label"><span>₿</span> CRYPTO</div>
-        <iframe src="https://ticker.polymarket.com/embed?category=Crypto&theme=dark&speed=1&displayMode=percentage&height=35" title="Crypto Ticker"></iframe>
       </div>
     </div>
   </div>
@@ -125,6 +121,12 @@
         <img src="profile.jpg" alt="0xDefalt" class="profile-img">
       </div>
     </section>
+
+    <!-- CRYPTO TICKER — acima da seção Ecossistema -->
+    <div class="crypto-ticker-bar animate-entry" style="animation-delay: 0.55s;">
+      <div class="ticker-label"><span>₿</span> CRYPTO</div>
+      <iframe src="https://ticker.polymarket.com/embed?category=Crypto&theme=dark&speed=1&displayMode=percentage&height=42" title="Crypto Ticker"></iframe>
+    </div>
 
     <section id="alpha" class="animate-entry" style="animation-delay: 0.6s;">
       <span class="section-title">O Ecossistema</span>
