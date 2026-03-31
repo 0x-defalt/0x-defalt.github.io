@@ -217,6 +217,14 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 1s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .top-ticker.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* wrapper that holds both slides side-by-side */
@@ -878,8 +886,21 @@
         .contact-email {
             font-size: 0.85rem;
             color: var(--text-dim);
-            margin-top: 12px;
-            display: block;
+            margin-top: 15px;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            font-family: var(--font-header);
+        }
+
+        .contact-email:hover {
+            color: var(--neon);
+            border-color: rgba(0, 255, 157, 0.3);
+            background: rgba(0, 255, 157, 0.05);
         }
 
         /* Footer — same as teste3 */
@@ -1285,7 +1306,7 @@
                     com: nome, objetivo (conteúdo/automação/parceria) e prazo.</p>
                 <a href="mailto:defaltpro.io@proton.me?subject=Parceria%20ou%20Projeto%20-%200xDefalt&body=Ol%C3%A1%2C%0A%0AMeu%20nome%20%C3%A9%3A%20%0AContato%3A%20%0AObjetivo%3A%20%28Cria%C3%A7%C3%A3o%20de%20Conte%C3%BAdo%20%7C%20Automa%C3%A7%C3%A3o%20%7C%20Parceria%20%7C%20Outro%29%0A%0ADetalhes%20do%20projeto%3A%0A%0AAguardo%20seu%20retorno.%0A"
                     id="contact-mailto" class="btn-main" data-i18n="contact_btn">✉️ Abrir Cliente de E-mail</a>
-                <span class="contact-email">defaltpro.io@proton.me</span>
+                <span class="contact-email" id="email-copy" title="Clique para copiar">defaltpro.io@proton.me</span>
             </div>
         </section>
     </main>
@@ -1601,12 +1622,33 @@
             }
         }
 
-        // Init — set wallet placeholder correctly on load
+        // Init — set initial states on load
         (function () {
             applyLang('pt'); // Populate mailto and initial text
             const box = document.getElementById('wallet-box');
             box.innerHTML = '<span class="wallet-placeholder">' + translations.pt.wallet_hint + '</span>';
+
+            // Ticker delayed appearance (5s)
+            setTimeout(() => {
+                const ticker = document.getElementById('top-ticker');
+                if (ticker) ticker.classList.add('visible');
+            }, 5000);
         })();
+
+        // --- EMAIL COPY LOGIC ---
+        document.getElementById('email-copy').addEventListener('click', function () {
+            const email = this.textContent.trim();
+            navigator.clipboard.writeText(email).then(() => {
+                const el = this;
+                const orig = el.style.color;
+                el.textContent = "Copiado! / Copied!";
+                el.style.color = "#00ff9d";
+                setTimeout(() => {
+                    el.textContent = email;
+                    el.style.color = orig;
+                }, 2000);
+            });
+        });
     </script>
 </body>
 
