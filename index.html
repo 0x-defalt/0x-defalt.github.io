@@ -1,179 +1,1590 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR" id="html-root">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>0xDefalt | Alpha & Automation · Ao Vivo</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://0x-defalt.github.io/" />
-  <meta property="og:title" content="0xDefalt — Alpha, Automação & Web3" />
-  <meta property="og:description" content="Content Creator · Builder · Dev. Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket." />
-  <meta property="og:image" content="https://0x-defalt.github.io/profile.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@0xDefalt" />
-  <meta name="twitter:title" content="0xDefalt — Alpha, Automação & Web3" />
-  <meta name="twitter:description" content="Content Creator · Builder · Dev. Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket." />
-  <meta name="twitter:image" content="https://0x-defalt.github.io/profile.jpg" />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <style>
-    :root { --neon: #00ff9d; --bg: #050505; --card-bg: #111111; --text: #ffffff; --dim-text: #888888; --font-header: 'Space Grotesk', sans-serif; --font-body: 'Inter', sans-serif; }
-    * { box-sizing: border-box; scroll-behavior: smooth; }
-    body { margin: 0; font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
-    #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.4; }
-    @keyframes fadeInSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes pulseGlow { 0% { text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); } 50% { text-shadow: 0 0 25px rgba(0, 255, 157, 0.8), 0 0 40px rgba(0, 255, 157, 0.3); } 100% { text-shadow: 0 0 10px rgba(0, 255, 157, 0.5); } }
-    @keyframes fadeInTicker { 0% { opacity: 0; } 100% { opacity: 1; } }
-    .animate-entry { animation: fadeInSlide 0.8s ease-out forwards; opacity: 0; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050505" />
+    <title>0xDefalt | Criação de Conteúdo, Automações & Parcerias Web3</title>
+    <meta name="description"
+        content="Builder & Content Creator especializado em automações, análise de dados e estratégia Web3. +150k impressões no X, +500k alcance global. Conecte-se para projetos e parcerias.">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://0x-defalt.github.io/" />
+    <meta property="og:title" content="0xDefalt — Alpha, Automação & Web3" />
+    <meta property="og:description"
+        content="Transformo dados em vantagem competitiva. Criação de conteúdo técnico, automações inteligentes e parcerias de alto impacto no ecossistema Web3." />
+    <meta property="og:image" content="https://0x-defalt.github.io/profile.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@0xDefalt" />
+    <meta name="twitter:title" content="0xDefalt — Alpha, Automação & Web3" />
+    <meta name="twitter:description"
+        content="Transformo dados em vantagem competitiva. Criação de conteúdo técnico, automações inteligentes e parcerias de alto impacto no ecossistema Web3." />
+    <meta name="twitter:image" content="https://0x-defalt.github.io/profile.jpg" />
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
-    /* TOP TICKER — só Breaking */
-    .top-ticker { position: fixed; top: 0; left: 0; width: 100%; height: 35px; background: #1a1f2e; border-bottom: 1px solid #2a3040; z-index: 200; font-family: var(--font-header); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0 20px; opacity: 0; animation: fadeInTicker 3s ease-in forwards; }
-    .ticker-row { max-width: 1100px; width: 100%; display: flex; align-items: center; gap: 15px; }
-    .ticker-group { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; }
-    .ticker-label { font-weight: 700; font-size: 0.75rem; text-transform: uppercase; color: var(--neon); letter-spacing: 0.5px; white-space: nowrap; display: flex; align-items: center; gap: 4px; line-height: 1; }
-    .ticker-label span { font-size: 0.9rem; }
-    .ticker-group iframe { flex: 1; height: 35px; border: none; overflow: hidden; border-radius: 4px; min-width: 100px; }
-
-    /* CRYPTO TICKER — faixa inline acima do Ecossistema */
-    .crypto-ticker-bar { width: 100%; background: #0d1117; border: 1px solid #1e2633; border-radius: 10px; display: flex; align-items: center; gap: 12px; padding: 0 16px; height: 42px; margin-bottom: 28px; }
-    .crypto-ticker-bar .ticker-label { font-size: 0.7rem; }
-    .crypto-ticker-bar iframe { flex: 1; height: 42px; border: none; overflow: hidden; border-radius: 4px; min-width: 100px; }
-
-    header { position: fixed; top: 35px; left: 0; width: 100%; z-index: 150; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid #222; animation: fadeInSlide 0.5s ease-out; }
-    nav { max-width: 1100px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .logo { font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; text-transform: uppercase; font-family: var(--font-header); color: var(--text); text-decoration: none; transition: 0.3s; }
-    .logo:hover { color: var(--neon); text-shadow: 0 0 15px var(--neon); }
-    .nav-links a { color: var(--dim-text); text-decoration: none; margin-left: 25px; font-size: 0.9rem; transition: 0.3s; font-family: var(--font-header); font-weight: 500; }
-    .nav-links a:hover { color: var(--neon); }
-    .container { max-width: 1100px; margin: 0 auto; padding: 120px 20px 0; position: relative; z-index: 1; }
-    .hero { padding: 30px 0 80px; display: flex; align-items: center; gap: 50px; }
-    .hero-content { flex: 1; }
-    .hero-content h1 { font-size: 3.5rem; line-height: 1.1; margin: 0 0 20px; font-weight: 700; font-family: var(--font-header); text-transform: uppercase; animation: pulseGlow 3s infinite; }
-    .hero-content p { font-size: 1.2rem; color: var(--dim-text); margin-bottom: 30px; }
-    .profile-wrapper { position: relative; width: 300px; height: 300px; flex-shrink: 0; transition: transform 0.1s ease-out; }
-    .profile-img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; border: 1px solid #333; transition: 0.5s; }
-    .profile-wrapper:hover .profile-img { border-color: var(--neon); box-shadow: 0 0 20px rgba(0, 255, 157, 0.3); animation: glitch 0.6s infinite; }
-    @keyframes glitch { 0% { transform: translate(0); filter: none; clip-path: none; } 10% { transform: translate(-3px, 1px); filter: hue-rotate(90deg); clip-path: inset(10% 0 80% 0); } 20% { transform: translate(3px, -1px); filter: hue-rotate(180deg); clip-path: inset(60% 0 20% 0); } 30% { transform: translate(-2px, 2px); filter: hue-rotate(270deg); clip-path: inset(30% 0 50% 0); } 40% { transform: translate(0); filter: none; clip-path: none; } 50% { transform: translate(4px, -2px); filter: brightness(1.5) saturate(2); clip-path: inset(5% 0 90% 0); } 60% { transform: translate(-4px, 1px); filter: hue-rotate(90deg); clip-path: inset(70% 0 10% 0); } 70% { transform: translate(2px, -1px); filter: none; clip-path: none; } 80% { transform: translate(-2px, 2px); filter: hue-rotate(180deg); clip-path: inset(40% 0 40% 0); } 90% { transform: translate(0); filter: none; clip-path: none; } 100% { transform: translate(0); filter: none; } }
-    .profile-wrapper::after { content: ""; position: absolute; top: 15px; left: 15px; width: 100%; height: 100%; border: 2px solid var(--neon); border-radius: 20px; z-index: -1; opacity: 0.3; }
-    .section-title { font-size: 0.8rem; text-transform: uppercase; color: var(--neon); letter-spacing: 3px; margin-bottom: 40px; display: block; font-family: var(--font-header); font-weight: 700; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 100px; }
-    .card { background: var(--card-bg); border: 1px solid #222; padding: 30px; border-radius: 12px; transition: 0.3s; text-decoration: none; color: inherit; }
-    .card:hover { border-color: var(--neon); transform: translateY(-8px); box-shadow: 0 5px 20px rgba(0, 255, 157, 0.1); }
-    .card h3 { margin: 0 0 10px; font-size: 1.3rem; font-family: var(--font-header); font-weight: 700; }
-    .card p { color: var(--dim-text); margin: 0; font-size: 0.95rem; }
-    .btn-main { display: inline-block; background: var(--neon); color: #000; padding: 15px 35px; border-radius: 8px; text-decoration: none; font-weight: 700; transition: 0.3s; font-family: var(--font-header); font-size: 0.9rem; text-transform: uppercase; }
-    .btn-main:hover { box-shadow: 0 0 30px rgba(0, 255, 157, 0.5); transform: scale(1.05); }
-    footer { padding: 50px 0; border-top: 1px solid #222; color: #444; font-size: 0.8rem; text-align: center; font-family: var(--font-header); }
-    .footer-twitter { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; color: var(--neon); text-decoration: none; font-family: var(--font-header); font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; border: 1px solid rgba(0, 255, 157, 0.3); padding: 8px 20px; border-radius: 6px; transition: 0.3s; }
-    .footer-twitter:hover { background: rgba(0, 255, 157, 0.08); border-color: var(--neon); box-shadow: 0 0 15px rgba(0, 255, 157, 0.2); }
-    .footer-twitter svg { width: 15px; height: 15px; fill: var(--neon); }
-    @media (max-width: 700px) { 
-      .top-ticker { height: 35px; }
-      header { top: 35px; } 
-      .container { padding-top: 120px; }
-      .crypto-ticker-bar { height: auto; min-height: 50px; padding: 6px 12px; }
-      .crypto-ticker-bar iframe { height: 35px; }
-    }
-    @media (max-width: 850px) { 
-      .hero { flex-direction: column-reverse; text-align: center; padding-top: 50px; } 
-      .hero-content h1 { font-size: 2.2rem; } 
-      .profile-wrapper { width: 200px; height: 200px; margin: 0 auto; } 
-    }
-  </style>
-</head>
-<body>
-  <div id="particles-js"></div>
-
-  <!-- TOP TICKER — só Breaking News -->
-  <div class="top-ticker">
-    <div class="ticker-row">
-      <div class="ticker-group">
-        <div class="ticker-label"><span>📰</span> BREAKING</div>
-        <iframe src="https://ticker.polymarket.com/embed?category=Breaking%20News&theme=dark&speed=1&displayMode=percentage&height=35" title="Breaking News Ticker"></iframe>
-      </div>
-    </div>
-  </div>
-
-  <header>
-    <nav>
-      <a href="#" class="logo">0xDefalt</a>
-      <div class="nav-links">
-        <a href="#about">Sobre</a>
-        <a href="#alpha">Alpha</a>
-        <a href="#links">Links</a>
-      </div>
-    </nav>
-  </header>
-
-  <main class="container">
-    <section class="hero" id="about">
-      <div class="hero-content animate-entry" style="animation-delay: 0.2s;">
-        <span class="section-title">Content Creator · Builder · Dev</span>
-        <h1>O Alpha que Você Procura, sem Ruído.</h1>
-        <p>Explorador da Automação, Análise de Sentimentos e Previsões na Polymarket. Transformando Dados em Lucro Real.</p>
-        <a href="https://t.me/SEU_CANAL" class="btn-main">Entrar no Telegram Alpha</a>
-      </div>
-      <div class="profile-wrapper animate-entry" style="animation-delay: 0.4s;">
-        <img src="profile.jpg" alt="0xDefalt" class="profile-img">
-      </div>
-    </section>
-
-    <!-- CRYPTO TICKER — acima da seção Ecossistema -->
-    <div class="crypto-ticker-bar animate-entry" style="animation-delay: 0.55s;">
-      <div class="ticker-label"><span>₿</span> CRYPTO</div>
-      <iframe src="https://ticker.polymarket.com/embed?category=Crypto&theme=dark&speed=1&displayMode=percentage&height=42" title="Crypto Ticker"></iframe>
-    </div>
-
-    <section id="alpha" class="animate-entry" style="animation-delay: 0.6s;">
-      <span class="section-title">O Ecossistema</span>
-      <div class="grid">
-        <a href="#" class="card"><h3>Polymarket Tools</h3><p>Automações exclusivas para monitorar odds e prever movimentações de baleias antes do mercado reagir.</p></a>
-        <a href="#" class="card"><h3>X (Twitter) Bots</h3><p>Scripts de monitoramento de menções e análise de sentimentos em tempo real para moedas de baixa liquidez.</p></a>
-        <a href="#" class="card"><h3>Consultoria Web3</h3><p>Análise de segurança de contratos e identificação de padrões de pump and dump.</p></a>
-      </div>
-    </section>
-
-    <section id="links" class="animate-entry" style="animation-delay: 0.8s; margin-bottom: 100px;">
-      <span class="section-title">Direct Links</span>
-      <div class="grid">
-        <a href="https://polymarket.com/?via=REF" class="card"><h3>Polymarket Ref</h3><p>Ganhe bônus ao operar pelo link oficial da comunidade.</p></a>
-        <a href="#" class="card"><h3>Automação</h3><p>Acesse os scripts e ferramentas de automação para monitoramento de mercado, alertas on-chain e execução de estratégias sem intervenção manual.</p></a>
-      </div>
-    </section>
-
-    <section id="produtividade" class="animate-entry" style="animation-delay: 1s; margin-bottom: 100px;">
-      <span class="section-title">Produtividade</span>
-      <div class="grid">
-        <div class="card"><h3>Sistemas & Fluxos</h3><p>Frameworks pessoais para operar com consistência: gestão de risco automatizada, rotinas de revisão de portfólio e dashboards que eliminam o ruído e mantêm o foco no que gera retorno.</p></div>
-        <div class="card"><h3>Menos Ruído, Mais Sinal</h3><p>Métodos e ferramentas para filtrar informação, automatizar tarefas repetitivas e liberar tempo para o que realmente importa — identificar oportunidades antes da maioria.</p></div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div>
-      <a href="https://twitter.com/0xDefalt" target="_blank" class="footer-twitter">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        @0xDefalt
-      </a>
-    </div>
-  </footer>
-
-  <script>
-    particlesJS("particles-js", {
-      particles: { number: { value: 70 }, color: { value: "#00ff9d" }, shape: { type: "circle" }, opacity: { value: 0.5 }, size: { value: 3 }, line_linked: { enable: true, color: "#00ff9d", opacity: 0.2, distance: 150 }, move: { enable: true, speed: 1.5 } },
-      interactivity: { events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } }, modes: { grab: { distance: 140, line_linked: { opacity: 0.5 } } } }
-    });
-    window.addEventListener('scroll', function() {
-      const scrolled = window.pageYOffset;
-      const profile = document.querySelector('.profile-wrapper');
-      const limit = 300; 
-      if (scrolled < limit) profile.style.transform = `translateY(${scrolled * 0.2}px)`;
-    });
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "0xDefalt",
+    "url": "https://0x-defalt.github.io/",
+    "image": "https://0x-defalt.github.io/profile.jpg",
+    "email": "mailto:defaltpro.io@proton.me",
+    "sameAs": ["https://twitter.com/0xDefalt"],
+    "jobTitle": "Content Creator & Web3 Automation Builder",
+    "description": "Especialista em criação de conteúdo técnico, automações inteligentes e parcerias estratégicas no ecossistema Web3."
+  }
   </script>
+
+    <style>
+        :root {
+            --neon: #00ff9d;
+            --neon-dim: rgba(0, 255, 157, 0.15);
+            --bg: #050505;
+            --surface: #0a0a0f;
+            --card-bg: #111318;
+            --border: #1e222a;
+            --text: #f8f9fa;
+            --text-dim: #8b949e;
+            --font-header: 'Space Grotesk', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, sans-serif;
+            --radius: 12px;
+            --shadow-neon: 0 8px 30px rgba(0, 255, 157, 0.12);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #particles-js {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        .logo {
+            font-family: var(--font-header);
+            letter-spacing: -0.02em;
+        }
+
+        .text-neon {
+            color: var(--neon);
+        }
+
+        .dim {
+            color: var(--text-dim);
+        }
+
+        .mono {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-main,
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: var(--font-header);
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-main {
+            background: var(--neon);
+            color: #000;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 255, 157, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--neon);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+        }
+
+        .btn-outline:hover {
+            background: var(--neon-dim);
+            border-color: var(--neon);
+        }
+
+        /* Language Button */
+        .lang-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            background: transparent;
+            border: 1px solid rgba(0, 255, 157, 0.25);
+            color: var(--text-dim);
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: var(--font-header);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.4px;
+        }
+
+        .lang-btn svg {
+            width: 15px;
+            height: 15px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .lang-btn:hover {
+            color: var(--neon);
+            border-color: var(--neon);
+            background: rgba(0, 255, 157, 0.07);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 70px 0;
+            position: relative;
+            scroll-margin-top: 130px;
+        }
+
+        .section-title {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--neon);
+            letter-spacing: 2.5px;
+            margin-bottom: 32px;
+            font-weight: 700;
+        }
+
+        /* Tickers */
+        .top-ticker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 36px;
+            background: #0d1017;
+            border-bottom: 1px solid var(--border);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* wrapper that holds both slides side-by-side */
+        .ticker-slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .ticker-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+        }
+
+        .ticker-row {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow: hidden;
+        }
+
+        .ticker-row iframe {
+            flex: 1;
+            height: 31px;
+            border: none;
+            overflow: hidden;
+            border-radius: 3px;
+            pointer-events: none;
+        }
+
+        .ticker-label {
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: var(--neon);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            font-family: var(--font-header);
+        }
+
+        /* dot indicators + arrow nav */
+        .ticker-nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+            padding: 0 10px;
+        }
+
+        .ticker-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            transition: background 0.25s;
+        }
+
+        .ticker-dot.active {
+            background: var(--neon);
+        }
+
+        .ticker-arrow {
+            background: transparent;
+            border: none;
+            color: #555;
+            font-size: 0.85rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 2px 3px;
+            transition: color 0.2s;
+        }
+
+        .ticker-arrow:hover {
+            color: var(--neon);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 36px;
+            left: 0;
+            width: 100%;
+            z-index: 150;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        nav {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-family: var(--font-header);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .logo:hover {
+            color: var(--neon);
+            text-shadow: 0 0 12px var(--neon);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+            font-weight: 500;
+            font-family: var(--font-header);
+        }
+
+        .nav-links a:hover {
+            color: var(--neon);
+        }
+
+        /* Hero */
+        .hero {
+            padding-top: 100px;
+            display: flex;
+            align-items: center;
+            gap: 55px;
+            min-height: 85vh;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-content .hero-sup {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--neon);
+            letter-spacing: 2.5px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin: 0 0 20px;
+            font-weight: 700;
+            font-family: var(--font-header);
+            text-transform: uppercase;
+            animation: pulseGlow 3s infinite;
+        }
+
+        @media (max-width: 850px) {
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 32px;
+            max-width: 600px;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .profile-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            flex-shrink: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.4s ease, border-color 0.3s;
+        }
+
+        .profile-wrapper:hover {
+            border-color: var(--neon);
+            box-shadow: 0 0 25px rgba(0, 255, 157, 0.25);
+        }
+
+        .profile-wrapper:hover .profile-img {
+            animation: glitch 0.6s infinite;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-wrapper::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            box-shadow: inset 0 0 30px rgba(0, 255, 157, 0.15);
+            pointer-events: none;
+        }
+
+        .profile-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--neon);
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Metrics (from teste4 style) */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 24px;
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .metric-card:hover {
+            border-color: rgba(0, 255, 157, 0.4);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .metric-card:hover::before {
+            opacity: 1;
+        }
+
+        /* All 4 value cells same size so emoji cards match number cards */
+        .metric-value {
+            font-size: 2.4rem;
+            font-family: var(--font-header);
+            font-weight: 700;
+            color: var(--neon);
+            line-height: 1;
+            min-height: 2.9rem;
+            /* keeps vertical rhythm equal across all cards */
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .metric-label {
+            font-size: 0.72rem;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            min-height: 2.2em;
+            /* same label block height → uniform desc start */
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .metric-desc {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.5;
+            flex: 1;
+            /* pushes hire-btn to bottom of card */
+        }
+
+        /* Services Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 28px;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 255, 157, 0.4);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--neon);
+        }
+
+        .card p {
+            color: var(--text-dim);
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Hire Now Button in events card */
+        .hire-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            background: transparent;
+            border: 1px solid rgba(0, 255, 157, 0.25);
+            color: var(--neon);
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            font-family: var(--font-header);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+        }
+
+        .hire-btn:hover {
+            background: rgba(0, 255, 157, 0.1);
+            border-color: var(--neon);
+            box-shadow: 0 0 12px rgba(0, 255, 157, 0.2);
+        }
+
+        /* Wallet Selector (from teste3 style) */
+        .wallet-section-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 24px;
+        }
+
+        .badge-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .network-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: var(--font-header);
+            border: 1px solid #333;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: 0.3s;
+            background: transparent;
+        }
+
+        .network-badge:hover,
+        .network-badge.active {
+            background: var(--neon);
+            color: #000;
+            border-color: var(--neon);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
+        }
+
+        .wallet-card {
+            background: rgba(10, 10, 10, 0.4);
+            border: 1px solid var(--border);
+            padding: 28px;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wallet-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .wallet-card:hover {
+            border-color: rgba(0, 255, 157, 0.4);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .wallet-card:hover::before {
+            opacity: 1;
+        }
+
+        .wallet-address {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            background: #0a0a0a;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px dashed #333;
+            color: var(--text);
+            margin-top: 5px;
+            word-break: break-all;
+            min-height: 54px;
+            display: flex;
+            align-items: center;
+            letter-spacing: 0.02em;
+            transition: border-color 0.3s, color 0.3s;
+        }
+
+        .wallet-address.hidden-addr {
+            filter: blur(6px);
+            user-select: none;
+            cursor: not-allowed;
+            color: var(--text-dim);
+        }
+
+        .wallet-copy-hint {
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .wallet-net-name {
+            color: var(--text);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .wallet-placeholder {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        /* Transparency card (from teste3, with green border) */
+        .transparency-card {
+            background: transparent;
+            border: 1px solid rgba(0, 255, 157, 0.25);
+            border-radius: var(--radius);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 240px;
+            /* fixed height to avoid layout jumps */
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .transparency-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .transparency-card:hover {
+            border-color: var(--neon);
+            transform: translateY(-6px);
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.15);
+        }
+
+        .transparency-card:hover::before {
+            opacity: 1;
+        }
+
+        .transparency-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: var(--text);
+            position: relative;
+            z-index: 2;
+        }
+
+        .transp-slider {
+            position: relative;
+            width: 100%;
+            flex: 1;
+        }
+
+        .transp-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(10px);
+            pointer-events: none;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .transp-slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            position: relative;
+            /* only active slide takes space */
+        }
+
+        /* Dots for the card slider */
+        .transp-nav {
+            display: flex;
+            gap: 8px;
+            margin-top: 25px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .transp-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .transp-dot.active {
+            background: var(--neon);
+            box-shadow: 0 0 8px var(--neon);
+            transform: scale(1.2);
+        }
+
+        /* Contact */
+        .contact-box {
+            background: transparent;
+            border: 1px solid rgba(0, 255, 157, 0.25);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .contact-box:hover {
+            border-color: var(--neon);
+            transform: translateY(-6px);
+            box-shadow: 0 0 40px rgba(0, 255, 157, 0.15);
+        }
+
+        .contact-box:hover::before {
+            opacity: 1;
+        }
+
+        .contact-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .contact-box p {
+            color: var(--text-dim);
+            margin-bottom: 24px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-email {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 12px;
+            display: block;
+        }
+
+        /* Footer — same as teste3 */
+        footer {
+            padding: 50px 0;
+            border-top: 1px solid #222;
+            color: #444;
+            font-size: 0.8rem;
+            text-align: center;
+            font-family: var(--font-header);
+            margin-top: 40px;
+        }
+
+        .footer-twitter {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            color: var(--neon);
+            text-decoration: none;
+            font-family: var(--font-header);
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            padding: 8px 20px;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .footer-twitter:hover {
+            background: rgba(0, 255, 157, 0.08);
+            border-color: var(--neon);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.2);
+        }
+
+        .footer-twitter svg {
+            width: 15px;
+            height: 15px;
+            fill: var(--neon);
+        }
+
+        .footer-copy {
+            margin-top: 16px;
+            color: #444;
+            font-size: 0.75rem;
+            font-family: var(--font-header);
+        }
+
+        /* Animations */
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            }
+
+            50% {
+                text-shadow: 0 0 25px rgba(0, 255, 157, 0.8), 0 0 40px rgba(0, 255, 157, 0.3);
+            }
+
+            100% {
+                text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            }
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+                filter: none;
+                clip-path: none;
+            }
+
+            10% {
+                transform: translate(-3px, 1px);
+                filter: hue-rotate(90deg);
+                clip-path: inset(10% 0 80% 0);
+            }
+
+            20% {
+                transform: translate(3px, -1px);
+                filter: hue-rotate(180deg);
+                clip-path: inset(60% 0 20% 0);
+            }
+
+            30% {
+                transform: translate(-2px, 2px);
+                filter: hue-rotate(270deg);
+                clip-path: inset(30% 0 50% 0);
+            }
+
+            40% {
+                transform: translate(0);
+                filter: none;
+                clip-path: none;
+            }
+
+            50% {
+                transform: translate(4px, -2px);
+                filter: brightness(1.5) saturate(2);
+                clip-path: inset(5% 0 90% 0);
+            }
+
+            60% {
+                transform: translate(-4px, 1px);
+                filter: hue-rotate(90deg);
+                clip-path: inset(70% 0 10% 0);
+            }
+
+            70% {
+                transform: translate(2px, -1px);
+                filter: none;
+                clip-path: none;
+            }
+
+            80% {
+                transform: translate(-2px, 2px);
+                filter: hue-rotate(180deg);
+                clip-path: inset(40% 0 40% 0);
+            }
+
+            90% {
+                transform: translate(0);
+                filter: none;
+                clip-path: none;
+            }
+
+            100% {
+                transform: translate(0);
+                filter: none;
+            }
+        }
+
+        .animate-entry {
+            animation: fadeInSlide 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .reveal {
+            opacity: 0;
+            filter: blur(12px);
+            transform: scale(0.95) translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                filter 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, filter, transform;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1) translate(0);
+        }
+
+        /* Direction variants */
+        .reveal-left {
+            transform: scale(0.95) translateX(-60px) translateY(20px);
+        }
+
+        .reveal-right {
+            transform: scale(0.95) translateX(60px) translateY(20px);
+        }
+
+        @media (max-width: 850px) {
+            .hero {
+                flex-direction: column-reverse;
+                text-align: center;
+                min-height: auto;
+                padding-top: 120px;
+            }
+
+            .profile-wrapper {
+                width: 220px;
+                height: 220px;
+                margin: 0 auto 30px;
+            }
+
+            .hero-ctas {
+                justify-content: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .wallet-section-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="particles-js"></div>
+
+    <!-- BREAKING + CRYPTO TICKER (slide toggle) -->
+    <div class="top-ticker" id="top-ticker">
+        <div class="ticker-slides" id="ticker-slides">
+            <!-- Slide 0 — Breaking News -->
+            <div class="ticker-slide">
+                <div class="ticker-row">
+                    <span class="ticker-label">📰 BREAKING</span>
+                    <iframe
+                        src="https://ticker.polymarket.com/embed?category=Breaking%20News&theme=dark&speed=1&displayMode=percentage&height=36"
+                        title="Breaking News" loading="lazy" scrolling="no"></iframe>
+                </div>
+            </div>
+            <!-- Slide 1 — Crypto -->
+            <div class="ticker-slide">
+                <div class="ticker-row">
+                    <span class="ticker-label">₿ CRYPTO</span>
+                    <iframe
+                        src="https://ticker.polymarket.com/embed?category=Crypto&theme=dark&speed=1&displayMode=percentage&height=36"
+                        title="Crypto Markets" loading="lazy" scrolling="no"></iframe>
+                </div>
+            </div>
+        </div>
+        <!-- Nav dots + arrows -->
+        <div class="ticker-nav">
+            <button class="ticker-arrow" id="tick-prev" onclick="tickerGo(-1)" title="Anterior">&#8249;</button>
+            <span class="ticker-dot active" id="dot-0" onclick="tickerSet(0)"></span>
+            <span class="ticker-dot" id="dot-1" onclick="tickerSet(1)"></span>
+            <button class="ticker-arrow" id="tick-next" onclick="tickerGo(1)" title="Próximo">&#8250;</button>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="#" class="logo">0xDefalt</a>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="#about" data-i18n="nav_about">Sobre</a>
+                    <a href="#servicos" data-i18n="nav_services">Serviços</a>
+                    <a href="#doacoes" data-i18n="nav_donations">Doações</a>
+                    <a href="#contato" data-i18n="nav_contact">Contato</a>
+                </div>
+                <button class="lang-btn" id="lang-toggle" onclick="toggleLang()" title="Switch language">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm-1-13H9V6H7v1H5v2h1.586L5.05 13H7l.5-1H10v-1h1V9h-1V7zm3 0v2h-1v2h2.764l.5 1h1.95l-1.536-4H14zm-2 9v-2h-2v2H9v1h6v-1h-2z" />
+                    </svg>
+                    <span id="lang-label">EN</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- HERO -->
+        <section class="hero" id="about">
+            <div class="hero-content animate-entry" style="animation-delay: 0.2s;">
+                <span class="hero-sup" data-i18n="hero_sup">Content Creator · Builder · Dev</span>
+                <h1 data-i18n="hero_h1">O Alpha que Você Procura, sem Ruído.</h1>
+                <p data-i18n="hero_sub">Transformo dados em vantagem competitiva. Criação de conteúdo técnico,
+                    automações inteligentes e parcerias de alto impacto no ecossistema Web3.</p>
+                <div class="hero-ctas">
+                    <a href="#contato" class="btn-main" data-i18n="btn_partnership">💼 Parcerias &amp; Projetos</a>
+                    <a href="#doacoes" class="btn-outline" data-i18n="btn_support">🌿 Apoie o Ecossistema</a>
+                </div>
+            </div>
+            <div class="profile-wrapper animate-entry" style="animation-delay: 0.4s;">
+                <img src="profile.jpg" alt="0xDefalt - Criador de Conteúdo & Desenvolvedor Web3" class="profile-img"
+                    fetchpriority="high" width="280" height="280">
+            </div>
+        </section>
+
+        <!-- AUDIÊNCIA & IMPACTO -->
+        <section class="reveal">
+            <span class="section-title" data-i18n="section_audience">Audiência &amp; Impacto</span>
+            <div class="metrics">
+                <div class="metric-card reveal reveal-left">
+                    <div class="metric-value">+150k</div>
+                    <div class="metric-label" data-i18n="metric1_label">Impressões no X</div>
+                    <div class="metric-desc" data-i18n="metric1_desc">Conteúdo técnico que alcança traders, devs e
+                        entusiastas de Web3 diariamente na plataforma X (Twitter).</div>
+                </div>
+                <div class="metric-card reveal reveal-right">
+                    <div class="metric-value">+500k</div>
+                    <div class="metric-label" data-i18n="metric2_label">Alcance Global</div>
+                    <div class="metric-desc" data-i18n="metric2_desc">Audiência distribuída entre Brasil, EUA, Europa e
+                        Ásia — com engajamento real apenas no X Twitter.</div>
+                </div>
+                <div class="metric-card reveal reveal-left">
+                    <div class="metric-value">🌐</div>
+                    <div class="metric-label" data-i18n="metric3_label">Conexões Locais &amp; Globais</div>
+                    <div class="metric-desc" data-i18n="metric3_desc">Rede ativa no Brasil com criadores de conteúdo,
+                        founders, desenvolvedores, hubs de cripto, projetos, entre outros.</div>
+                </div>
+                <div class="metric-card reveal reveal-right" id="events-metric">
+                    <div class="metric-value">🎤</div>
+                    <div class="metric-label" data-i18n="metric4_label">Presença em Eventos Tech/Web3</div>
+                    <div class="metric-desc" data-i18n="metric4_desc">Participação em conferências, meetups e painéis de
+                        blockchain, IA e finanças descentralizadas.</div>
+                    <a href="#contato" class="hire-btn" data-i18n="btn_hire">✨ Contrate agora</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVIÇOS -->
+        <section id="servicos" class="reveal">
+            <span class="section-title" data-i18n="section_services">O que eu entrego</span>
+            <div class="grid">
+                <article class="card reveal reveal-left">
+                    <h3 data-i18n="svc1_title">📝 Criação de Conteúdo</h3>
+                    <p data-i18n="svc1_desc">Artigos técnicos, threads virais, roteiros e análises de mercado com
+                        linguagem acessível e profundidade técnica. Foco em retenção, SEO e conversão.</p>
+                </article>
+                <article class="card reveal">
+                    <h3 data-i18n="svc2_title">⚙️ Automações Inteligentes</h3>
+                    <p data-i18n="svc2_desc">Bots de monitoramento, alertas on-chain, dashboards customizados e scripts
+                        para eliminar tarefas repetitivas. Mais sinal, menos ruído operacional.</p>
+                </article>
+                <article class="card reveal reveal-right">
+                    <h3 data-i18n="svc3_title">🤝 Parcerias Estratégicas</h3>
+                    <p data-i18n="svc3_desc">Collabs com projetos, lançamentos co-criados, consultoria de growth e
+                        participação em eventos. Estruturo pontes entre tecnologia e audiência qualificada.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- DOAÇÕES — Wallet Interativa (teste3 style) + addresses hidden until click -->
+        <section id="doacoes" class="reveal">
+            <span class="section-title" data-i18n="section_donations">Apoie o Ecossistema</span>
+            <div class="wallet-section-grid">
+                <!-- Wallet Selector -->
+                <div class="wallet-card reveal">
+                    <div class="badge-group">
+                        <button class="network-badge" onclick="setWallet('btc', this)" data-i18n-net="btc">BTC</button>
+                        <button class="network-badge" onclick="setWallet('sol', this)" data-i18n-net="sol">SOL</button>
+                        <button class="network-badge" onclick="setWallet('evm', this)" data-i18n-net="evm">EVM</button>
+                        <button class="network-badge" onclick="setWallet('ln', this)" data-i18n-net="ln">LN
+                            SATS</button>
+                    </div>
+
+                    <h3 id="net-name" class="wallet-net-name">—</h3>
+                    <div id="wallet-box" class="wallet-address hidden-addr">
+                        <span class="wallet-placeholder" data-i18n="wallet_hint">← Selecione uma rede para revelar o
+                            endereço</span>
+                    </div>
+                    <p class="wallet-copy-hint" id="copy-hint" style="display:none;">📋 <span
+                            data-i18n="wallet_copy">Clique na caixa para copiar</span></p>
+                </div>
+
+                <!-- Transparency (green border) -->
+                <div class="transparency-card reveal">
+                    <h3 data-i18n="transp_title">Transparência Total</h3>
+                    <div class="transp-slider" id="transp-slider">
+                        <!-- Slide 1: Mission -->
+                        <div class="transp-slide active" data-i18n="transp_desc">
+                            Contribuições diretas financiam desenvolvimento open-source, ferramentas gratuitas e
+                            pesquisas de mercado. Sua doação mantém o ecossistema livre e funcional.
+                        </div>
+                        <!-- Slide 2: Platform -->
+                        <div class="transp-slide" data-i18n="transp_platform">
+                            Hub de Talentos: Desenvolvendo a infraestrutura que une projetos a contribuidores de elite.
+                            Onde o trabalho encontra a recompensa on-chain.
+                        </div>
+                        <!-- Slide 3: Education -->
+                        <div class="transp-slide" data-i18n="transp_edu">
+                            Formação Técnica: Trilhas de aprendizado para quem quer viver de Web3. Ensinando iniciantes
+                            a gerar renda e transformar suas vidas através da tecnologia.
+                        </div>
+                    </div>
+                    <div class="transp-nav">
+                        <span class="transp-dot active" onclick="setTransp(0)"></span>
+                        <span class="transp-dot" onclick="setTransp(1)"></span>
+                        <span class="transp-dot" onclick="setTransp(2)"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTATO -->
+        <section id="contato" class="reveal">
+            <span class="section-title" data-i18n="section_contact">Contato Direto</span>
+            <div class="contact-box reveal">
+                <h3 data-i18n="contact_h3">Vamos construir algo real?</h3>
+                <p data-i18n="contact_p">Envie uma mensagem diretamente para meu e-mail. Prefiro mensagens objetivas
+                    com: nome, objetivo (conteúdo/automação/parceria) e prazo.</p>
+                <a href="#" id="contact-mailto" class="btn-main" data-i18n="contact_btn">✉️ Abrir Cliente de E-mail</a>
+                <span class="contact-email">defaltpro.io@proton.me</span>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER — same as teste3 with X button only -->
+    <footer>
+        <div>
+            <a href="https://twitter.com/0xDefalt" target="_blank" rel="noopener" class="footer-twitter">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                @0xDefalt
+            </a>
+        </div>
+        <p class="footer-copy">&copy; <span id="year"></span> 0xDefalt. <span data-i18n="footer_rights">Todos os
+                direitos reservados.</span> Web3 &amp; Automation.</p>
+    </footer>
+
+    <script>
+        // --- YEAR ---
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // --- TICKER SLIDE ---
+        let tickerIndex = 0;
+        const TICKER_TOTAL = 2;
+        let tickerTimer = null;
+
+        function tickerSet(idx) {
+            tickerIndex = (idx + TICKER_TOTAL) % TICKER_TOTAL;
+            document.getElementById('ticker-slides').style.transform =
+                'translateX(-' + (tickerIndex * 100) + '%)';
+            document.querySelectorAll('.ticker-dot').forEach((d, i) =>
+                d.classList.toggle('active', i === tickerIndex));
+            resetTickerAuto();
+        }
+
+        function tickerGo(dir) { tickerSet(tickerIndex + dir); }
+
+        function resetTickerAuto() {
+            clearInterval(tickerTimer);
+            tickerTimer = setInterval(() => tickerGo(1), 8000);
+        }
+        resetTickerAuto(); // start auto-rotate
+
+        // --- TRANSPARENCY SLIDER ---
+        let transpIndex = 0;
+        const TRANSP_TOTAL = 3;
+        let transpTimer = null;
+
+        function setTransp(idx) {
+            transpIndex = idx;
+            const slides = document.querySelectorAll('.transp-slide');
+            const dots = document.querySelectorAll('.transp-dot');
+
+            slides.forEach((s, i) => s.classList.toggle('active', i === transpIndex));
+            dots.forEach((d, i) => d.classList.toggle('active', i === transpIndex));
+
+            resetTranspAuto();
+        }
+
+        function rotateTransp() {
+            setTransp((transpIndex + 1) % TRANSP_TOTAL);
+        }
+
+        function resetTranspAuto() {
+            clearInterval(transpTimer);
+            transpTimer = setInterval(rotateTransp, 8000);
+        }
+        setInterval(rotateTransp, 8000); // rotate every 8s
+
+        // --- REVEAL ON SCROLL ---
+        const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // --- PARTICLES ---
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 100, density: { enable: true, value_area: 800 } },
+                color: { value: "#00ff9d" },
+                shape: { type: "circle" },
+                opacity: { value: 0.75, random: true },
+                size: { value: 3.5, random: true },
+                line_linked: { enable: true, distance: 150, color: "#00ff9d", opacity: 0.45, width: 1.2 },
+                move: { enable: true, speed: 1.7, direction: "none", out_mode: "out" }
+            },
+            interactivity: {
+                events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } },
+                modes: { grab: { distance: 150, line_linked: { opacity: 0.7 } } }
+            },
+            retina_detect: true
+        });
+
+        // --- PARALLAX PROFILE ---
+        window.addEventListener('scroll', () => {
+            const s = window.pageYOffset;
+            const p = document.querySelector('.profile-wrapper');
+            if (p && s < 400) p.style.transform = `scale(${p.matches(':hover') ? 1.02 : 1}) translateY(${s * 0.08}px)`;
+        });
+
+        // --- WALLET LOGIC (addresses hidden until a network is clicked) ---
+        const wallets = {
+            btc: { net: { pt: 'Bitcoin', en: 'Bitcoin' }, addr: 'bc1q8rv9vyyk58k2en50w0jx426dxp0d9230jumnfr' },
+            sol: { net: { pt: 'Solana', en: 'Solana' }, addr: '8YKmoJcAWdu3eqpKDYFubPrSR1qCjLsM1EsqGoyeN3LJ' },
+            evm: { net: { pt: 'EVM (ETH / Base / Polygon)', en: 'EVM (ETH / Base / Polygon)' }, addr: '0x01Cd972c245a1494179d5A49406a04BD9dF44392' },
+            ln: { net: { pt: 'Lightning Network', en: 'Lightning Network' }, addr: 'rawclef14@walletofsatoshi.com' }
+        };
+
+        let selectedNet = null;
+
+        function setWallet(net, btn) {
+            selectedNet = net;
+            const data = wallets[net];
+            const lang = currentLang;
+            document.getElementById('net-name').textContent = data.net[lang] || data.net.pt;
+
+            const box = document.getElementById('wallet-box');
+            box.classList.remove('hidden-addr');
+            box.textContent = data.addr;
+
+            document.getElementById('copy-hint').style.display = 'block';
+
+            document.querySelectorAll('.network-badge').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        document.getElementById('wallet-box').addEventListener('click', function () {
+            if (this.classList.contains('hidden-addr')) return;
+            const text = this.textContent.trim();
+            if (!text || text.length < 5) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const el = this;
+                const orig = el.style.borderColor;
+                const origC = el.style.color;
+                el.style.borderColor = '#00ff9d';
+                el.style.color = '#00ff9d';
+                setTimeout(() => {
+                    el.style.borderColor = orig;
+                    el.style.color = origC;
+                }, 700);
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            });
+        });
+
+        // --- LANGUAGE SYSTEM ---
+        let currentLang = 'pt';
+
+        const translations = {
+            pt: {
+                nav_about: 'Sobre',
+                nav_services: 'Serviços',
+                nav_donations: 'Doações',
+                nav_contact: 'Contato',
+                hero_sup: 'Content Creator · Builder · Dev',
+                hero_h1: 'O Alpha que Você Procura, sem Ruído.',
+                hero_sub: 'Transformo dados em vantagem competitiva. Criação de conteúdo técnico, automações inteligentes e parcerias de alto impacto no ecossistema Web3.',
+                btn_partnership: '💼 Parcerias & Projetos',
+                btn_support: '🌿 Apoie o Ecossistema',
+                section_audience: 'Audiência & Impacto',
+                metric1_label: 'Impressões no X',
+                metric1_desc: 'Conteúdo técnico que alcança traders, devs e entusiastas de Web3 diariamente na plataforma X (Twitter).',
+                metric2_label: 'Alcance Global',
+                metric2_desc: 'Audiência distribuída entre Brasil, EUA, Europa e Ásia — com engajamento real apenas no X Twitter.',
+                metric3_label: 'Conexões Locais & Globais',
+                metric3_desc: 'Rede ativa no Brasil com criadores de conteúdo, founders, desenvolvedores, hubs de cripto, projetos, entre outros.',
+                metric4_label: 'Presença em Eventos Tech/Web3',
+                metric4_desc: 'Participação em conferências, meetups e painéis de blockchain, IA e finanças descentralizadas.',
+                btn_hire: '✨ Contrate agora',
+                section_services: 'O que eu entrego',
+                svc1_title: '📝 Criação de Conteúdo',
+                svc1_desc: 'Artigos técnicos, threads virais, roteiros e análises de mercado com linguagem acessível e profundidade técnica. Foco em retenção, SEO e conversão.',
+                svc2_title: '⚙️ Automações Inteligentes',
+                svc2_desc: 'Bots de monitoramento, alertas on-chain, dashboards customizados e scripts para eliminar tarefas repetitivas. Mais sinal, menos ruído operacional.',
+                svc3_title: '🤝 Parcerias Estratégicas',
+                svc3_desc: 'Collabs com projetos, lançamentos co-criados, consultoria de growth e participação em eventos. Estruturo pontes entre tecnologia e audiência qualificada.',
+                section_donations: 'Apoie o Ecossistema',
+                wallet_hint: '← Selecione uma rede para revelar o endereço',
+                wallet_copy: 'Clique na caixa para copiar',
+                transp_title: 'Transparência Total',
+                transp_desc: 'Contribuições diretas financiam desenvolvimento open-source, ferramentas gratuitas e pesquisas de mercado. Sua doação mantém o ecossistema livre e funcional.',
+                transp_platform: 'Hub de Talentos: Desenvolvendo a infraestrutura que une projetos a contribuidores de elite. Onde o trabalho encontra a recompensa on-chain.',
+                transp_edu: 'Formação Técnica: Trilhas de aprendizado para quem quer viver de Web3. Ensinando iniciantes a gerar renda e transformar suas vidas através da tecnologia.',
+                section_contact: 'Contato Direto',
+                contact_h3: 'Vamos construir algo real?',
+                contact_p: 'Envie uma mensagem diretamente para meu e-mail. Prefiro mensagens objetivas com: nome, objetivo (conteúdo/automação/parceria) e prazo.',
+                contact_btn: '✉️ Abrir Cliente de E-mail',
+                contact_subject: 'Parceria ou Projeto - 0xDefalt',
+                contact_body: 'Olá,\n\nMeu nome é: \nContato: \nObjetivo: (Criação de Conteúdo | Automação | Parceria | Outro)\n\nDetalhes do projeto:\n\nAguardo seu retorno.',
+                footer_rights: 'Todos os direitos reservados.',
+            },
+            en: {
+                nav_about: 'About',
+                nav_services: 'Services',
+                nav_donations: 'Donate',
+                nav_contact: 'Contact',
+                hero_sup: 'Content Creator · Builder · Dev',
+                hero_h1: 'The Alpha You\'re Looking For, noise-free.',
+                hero_sub: 'I turn data into competitive advantage. Technical content creation, intelligent automations, and high-impact partnerships in the Web3 ecosystem.',
+                btn_partnership: '💼 Partnerships & Projects',
+                btn_support: '🌿 Support the Ecosystem',
+                section_audience: 'Audience & Impact',
+                metric1_label: 'Impressions on X',
+                metric1_desc: 'Technical content reaching traders, devs and Web3 enthusiasts daily on the X (Twitter) platform.',
+                metric2_label: 'Global Reach',
+                metric2_desc: 'Audience spread across Brazil, USA, Europe and Asia — with real engagement exclusively on X Twitter.',
+                metric3_label: 'Local & Global Connections',
+                metric3_desc: 'Active network in Brazil with content creators, founders, developers, crypto hubs, projects, and more.',
+                metric4_label: 'Presence at Tech/Web3 Events',
+                metric4_desc: 'Participation in conferences, meetups and panels on blockchain, AI and decentralized finance.',
+                btn_hire: '✨ Hire now',
+                section_services: 'What I deliver',
+                svc1_title: '📝 Content Creation',
+                svc1_desc: 'Technical articles, viral threads, scripts and market analysis with accessible language and real depth. Focus on retention, SEO and conversion.',
+                svc2_title: '⚙️ Intelligent Automations',
+                svc2_desc: 'Monitoring bots, on-chain alerts, custom dashboards and scripts to eliminate repetitive tasks. More signal, less operational noise.',
+                svc3_title: '🤝 Strategic Partnerships',
+                svc3_desc: 'Collabs with projects, co-created launches, growth consulting and event participation. I build bridges between technology and qualified audiences.',
+                section_donations: 'Support the Ecosystem',
+                wallet_hint: '← Select a network to reveal the address',
+                wallet_copy: 'Click the box to copy',
+                transp_title: 'Full Transparency',
+                transp_desc: 'Direct contributions fund open-source development, free tools and market research. Your donation keeps the ecosystem free and functional.',
+                transp_platform: 'Talent Hub: Developing the infrastructure that joins projects with elite contributors. Where work meets on-chain rewards.',
+                transp_edu: 'Technical Training: Learning paths for those who want to live off Web3. Teaching beginners to generate income and transform their lives through technology.',
+                section_contact: 'Direct Contact',
+                contact_h3: 'Let\'s build something real?',
+                contact_p: 'Send a message directly to my e-mail. I prefer objective messages with: name, goal (content/automation/partnership) and deadline.',
+                contact_btn: '✉️ Open Email Client',
+                contact_subject: 'Partnership or Project - 0xDefalt',
+                contact_body: 'Hello,\n\nMy name is: \nContact: \nGoal: (Content Creation | Automation | Partnership | Other)\n\nProject details:\n\nLooking forward to hearing from you.',
+                footer_rights: 'All rights reserved.',
+            }
+        };
+
+        function toggleLang() {
+            currentLang = currentLang === 'pt' ? 'en' : 'pt';
+            applyLang(currentLang);
+        }
+
+        function applyLang(lang) {
+            const t = translations[lang];
+
+            // Simple text nodes
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) {
+                    if (t[key].includes('<')) {
+                        el.innerHTML = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            });
+
+            // Update wallet placeholder if no network is selected
+            if (!selectedNet) {
+                const box = document.getElementById('wallet-box');
+                const hint = box.querySelector('.wallet-placeholder');
+                if (hint) hint.textContent = t.wallet_hint;
+            } else {
+                // Update network name in current lang
+                const data = wallets[selectedNet];
+                document.getElementById('net-name').textContent = data.net[lang] || data.net.pt;
+            }
+
+            // Toggle button label: shows the language you can switch TO
+            const label = document.getElementById('lang-label');
+            label.textContent = (lang === 'en') ? 'PT' : 'EN';
+
+            // Update html lang attr
+            document.getElementById('html-root').setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
+
+            // Update mailto link
+            const mailBtn = document.getElementById('contact-mailto');
+            if (mailBtn) {
+                const subject = encodeURIComponent(t.contact_subject);
+                const body = encodeURIComponent(t.contact_body);
+                mailBtn.href = `mailto:defaltpro.io@proton.me?subject=${subject}&body=${body}`;
+            }
+        }
+
+        // Init — set wallet placeholder correctly on load
+        (function () {
+            const box = document.getElementById('wallet-box');
+            box.innerHTML = '<span class="wallet-placeholder">' + translations.pt.wallet_hint + '</span>';
+        })();
+    </script>
 </body>
+
 </html>
