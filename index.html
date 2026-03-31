@@ -1283,7 +1283,8 @@
                 <h3 data-i18n="contact_h3">Vamos construir algo real?</h3>
                 <p data-i18n="contact_p">Envie uma mensagem diretamente para meu e-mail. Prefiro mensagens objetivas
                     com: nome, objetivo (conteúdo/automação/parceria) e prazo.</p>
-                <a href="#" id="contact-mailto" class="btn-main" data-i18n="contact_btn">✉️ Abrir Cliente de E-mail</a>
+                <a href="mailto:defaltpro.io@proton.me?subject=Parceria%20ou%20Projeto%20-%200xDefalt&body=Ol%C3%A1%2C%0A%0AMeu%20nome%20%C3%A9%3A%20%0AContato%3A%20%0AObjetivo%3A%20%28Cria%C3%A7%C3%A3o%20de%20Conte%C3%BAdo%20%7C%20Automa%C3%A7%C3%A3o%20%7C%20Parceria%20%7C%20Outro%29%0A%0ADetalhes%20do%20projeto%3A%0A%0AAguardo%20seu%20retorno.%0A"
+                    id="contact-mailto" class="btn-main" data-i18n="contact_btn">✉️ Abrir Cliente de E-mail</a>
                 <span class="contact-email">defaltpro.io@proton.me</span>
             </div>
         </section>
@@ -1602,6 +1603,7 @@
 
         // Init — set wallet placeholder correctly on load
         (function () {
+            applyLang('pt'); // Populate mailto and initial text
             const box = document.getElementById('wallet-box');
             box.innerHTML = '<span class="wallet-placeholder">' + translations.pt.wallet_hint + '</span>';
         })();
