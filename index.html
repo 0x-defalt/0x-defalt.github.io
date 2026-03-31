@@ -419,13 +419,14 @@
             flex-shrink: 0;
             border-radius: 20px;
             overflow: hidden;
-            border: 1px solid var(--border);
+            border: 2px solid var(--neon);
             transition: transform 0.4s ease, border-color 0.3s;
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.1);
         }
 
         .profile-wrapper:hover {
             border-color: var(--neon);
-            box-shadow: 0 0 25px rgba(0, 255, 157, 0.25);
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.3);
         }
 
         .profile-wrapper:hover .profile-img {
@@ -1350,10 +1351,10 @@
         }
 
         function resetTranspAuto() {
-            clearInterval(transpTimer);
+            if (transpTimer) clearInterval(transpTimer);
             transpTimer = setInterval(rotateTransp, 8000);
         }
-        setInterval(rotateTransp, 8000); // rotate every 8s
+        resetTranspAuto(); // start auto-rotate
 
         // --- REVEAL ON SCROLL ---
         const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
@@ -1374,13 +1375,13 @@
                 color: { value: "#00ff9d" },
                 shape: { type: "circle" },
                 opacity: { value: 0.75, random: true },
-                size: { value: 3.5, random: true },
-                line_linked: { enable: true, distance: 150, color: "#00ff9d", opacity: 0.45, width: 1.2 },
-                move: { enable: true, speed: 1.7, direction: "none", out_mode: "out" }
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#00ff9d", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 1.6, direction: "none", out_mode: "out" }
             },
             interactivity: {
                 events: { onhover: { enable: true, mode: "grab" }, onclick: { enable: true, mode: "push" } },
-                modes: { grab: { distance: 150, line_linked: { opacity: 0.7 } } }
+                modes: { grab: { distance: 150, line_linked: { opacity: 0.6 } } }
             },
             retina_detect: true
         });
@@ -1401,25 +1402,45 @@
         };
 
         let selectedNet = null;
+        let walletTimeout = null;
+
+        function resetWalletUI() {
+            selectedNet = null;
+            const box = document.getElementById('wallet-box');
+            box.classList.add('hidden-addr');
+            box.innerHTML = `<span class="wallet-placeholder" data-i18n="wallet_hint">${translations[currentLang].wallet_hint}</span>`;
+            document.getElementById('net-name').textContent = '—';
+            document.getElementById('copy-hint').style.display = 'none';
+            document.querySelectorAll('.network-badge').forEach(b => b.classList.remove('active'));
+        }
 
         function setWallet(net, btn) {
+            if (walletTimeout) clearTimeout(walletTimeout);
+
             selectedNet = net;
             const data = wallets[net];
-            const lang = currentLang;
-            document.getElementById('net-name').textContent = data.net[lang] || data.net.pt;
+            document.getElementById('net-name').textContent = data.net[currentLang] || data.net.pt;
 
             const box = document.getElementById('wallet-box');
             box.classList.remove('hidden-addr');
             box.textContent = data.addr;
 
             document.getElementById('copy-hint').style.display = 'block';
-
             document.querySelectorAll('.network-badge').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+
+            // Set 10s timeout to hide again
+            walletTimeout = setTimeout(resetWalletUI, 10000);
         }
 
         document.getElementById('wallet-box').addEventListener('click', function () {
             if (this.classList.contains('hidden-addr')) return;
+
+            // Interaction reset: give another 30s
+            if (walletTimeout) {
+                clearTimeout(walletTimeout);
+                walletTimeout = setTimeout(resetWalletUI, 10000);
+            }
             const text = this.textContent.trim();
             if (!text || text.length < 5) return;
             navigator.clipboard.writeText(text).then(() => {
